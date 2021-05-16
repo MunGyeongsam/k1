@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>kday - prog</title>
+		<meta charset="utf-8">
+		<style>
+			.map {
+				border: 2px outset blue;
+				background-color:black;
+			}
+		</style>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+		
+	</head>
+
+	<body>
+		<h2><a title="Back" href="index.html">Back</a></h2>
+
+		<p>
+			<label>Zoom
+				<label><input onclick="setZoomable(true)" type="radio" name="zoom" value="on"> ON</label>
+				<label><input onclick="setZoomable(false)" type="radio" name="zoom" value="off"> OFF</label>
+			</label>
+		</p>
+		<p>
+			<label>Move
+				<label><input onclick="setDraggable(true)" type="radio" name="move" value="on"> ON</label>
+				<label><input onclick="setDraggable(false)" type="radio" name="move" value="off"> OFF</label>
+			</label>
+		</p>
+		<p>
+			<button onclick="toggleOverlayMapTypeId('terrain')">지형정보 보기</button>
+			<button onclick="toggleOverlayMapTypeId('use_district')">지적편집도 보기</button>
+		</p> 
+		
+		<p>
+			<label for="cars">Choose a car:</label>
+
+			<select name="cars" id="cars">
+				<option value="volvo">Volvo</option>
+				<option value="saab">Saab</option>
+				<option value="mercedes">Mercedes</option>
+				<option value="audi">Audi</option>
+			</select>
+		</p>
+		
+		<div class="map" id="map" style="width:100%;height:800px;">
+		</div>
+		
+		
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06">
+			//appkey == JavaScript 키
+		</script>
+
+		<script>
+			var lat = 37.498004414546934;
+			var lng = 127.02770621963765;
+		</script>
+		<script type="text/javascript" src="kakao_map.js"></script>
+		
+		<script>
+			lat = 35.498004414546934;
+			lng = 127.02770621963765;
+			panTo(lat, lng)
+		</script>
+
+
+	</body>
+</html>
