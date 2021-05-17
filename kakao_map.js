@@ -1,7 +1,7 @@
 
-//=============================================================================
-// kakao.maps.Map
-//=============================================================================
+
+
+
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 
 mapOption = { 
@@ -57,6 +57,9 @@ function getInfo() {
 	// ex) console.log(message);
 }
 
+// 지도 레벨을 표시합니다
+displayLevel();
+
 // 지도 레벨은 지도의 확대 수준을 의미합니다
 // 지도 레벨은 1부터 14레벨이 있으며 숫자가 작을수록 지도 확대 수준이 높습니다
 function zoomIn() {        
@@ -65,6 +68,9 @@ function zoomIn() {
 	
 	// 지도를 1레벨 내립니다 (지도가 확대됩니다)
 	map.setLevel(level - 1);
+	
+	// 지도 레벨을 표시합니다
+	displayLevel();
 }    
 
 function zoomOut() {    
@@ -73,8 +79,15 @@ function zoomOut() {
 	
 	// 지도를 1레벨 올립니다 (지도가 축소됩니다)
 	map.setLevel(level + 1);
+	
+	// 지도 레벨을 표시합니다
+	displayLevel(); 
 }    
 
+function displayLevel(){
+	var levelEl = document.getElementById('maplevel');
+	levelEl.innerHTML = '현재 지도 레벨은 ' + map.getLevel() + ' 레벨 입니다.';
+}
 
 // 버튼 클릭에 따라 지도 이동 기능을 막거나 풀고 싶은 경우에는 map.setDraggable 함수를 사용합니다
 function setDraggable(draggable) {
@@ -132,22 +145,4 @@ function toggleOverlayMapTypeId(maptype) {
 		else
 			map.removeOverlayMapTypeId(changeMaptype);    
     }
-}
-
-
-//=============================================================================
-// kakao.maps.services.Geocoder
-//=============================================================================
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
-
-function searchAddrFromCoords(coords, callback) {
-	// 좌표로 행정동 주소 정보를 요청합니다
-	geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
-	alert("good 4");
-}
-
-function searchDetailAddrFromCoords(coords, callback) {
-	// 좌표로 법정동 상세 주소 정보를 요청합니다
-	geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }
