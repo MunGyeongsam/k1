@@ -8,8 +8,6 @@
 				border: 2px outset blue;
 				background-color:black;
 			}
-		</style>
-		<style>
 			.ui {
 				border: 2px outset blue;
 				background-color:rgb(151, 151, 151);
@@ -65,13 +63,31 @@
 		<script>
 			//37.58468807390984
 			//126.96640550469013
-			var lat = 37.498004414546934;
-			var lng = 127.02770621963765;
+			let lat = 37.498004414546934;
+			let lng = 127.02770621963765;
+
+			let markers = new Map();
 		</script>
 		<script type="text/javascript" src="kakao_map.js"></script>
 		
 		<script>
 
+			function addMarker(address, coord) {
+				var marker = new kakao.maps.Marker({ position: coord }); 
+				markers.set(address, marker);
+
+				marker.setMap(map);
+			}
+
+			function remMarker(address) {
+				var marker = markers.get(address);
+				if (marker)
+				{
+					marker.setMap(null);
+					markers.delete(address);
+				}
+			}
+			
 			infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
 			
 			lat = 35.49797376993066;
@@ -80,13 +96,6 @@
 			map.setLevel(1);
 			toggleOverlayMapTypeId('use_district');
 
-			// 지도를 클릭한 위치에 표출할 마커입니다
-			var marker = new kakao.maps.Marker({ 
-				// 지도 중심좌표에 마커를 생성합니다 
-				position: map.getCenter() 
-			}); 
-			// 지도에 마커를 표시합니다
-			marker.setMap(map);
 
 			// 지도에 클릭 이벤트를 등록합니다
 			// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -95,9 +104,6 @@
 				// 클릭한 위도, 경도 정보를 가져옵니다 
 				var latlng = mouseEvent.latLng; 
 				
-				// 마커 위치를 클릭한 위치로 옮깁니다
-				marker.setPosition(latlng);
-				
 				var message = 'Lat : ' + latlng.getLat();
 				message += ', Lng : ' + latlng.getLng();
 				
@@ -105,13 +111,31 @@
 				resultDiv.innerHTML = message;
 
 				searchDetailAddrFromCoords(latlng, function(result, status) {
+					if (status === kakao.maps.services.Status.OK) {
+						const address = result[0].address.address_name;
+
+						addrToCoords(address,  function(result, status) {
+							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+							
+							if (markers.has(address))
+							{
+								remMarker(address);
+							}
+							else
+							{
+								addMarker(address, coords);
+								panTo(result[0].y, result[0].x);
+							}
+						});
+					}
+				});
+				/*
+				searchDetailAddrFromCoords(latlng, function(result, status) {
 					
 					if (status === kakao.maps.services.Status.OK) {
 						var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
 						detailAddr += '<div>지번 주소 : ' 
-							+ result[0].address.address_name + ' '
-							+ result[0].address.main_address_no + ' '
-							+ result[0].address.sub_address_no + ' '
+							+ result[0].address.address_name
 							+ '</div>';
 						
 						var content = '<div class="bAddr">' +
@@ -122,12 +146,16 @@
 						// 마커를 클릭한 위치에 표시합니다 
 						marker.setPosition(mouseEvent.latLng);
 						marker.setMap(map);
+						console.log(result);
+
+						panTo(latlng.getLat(), latlng.getLng())
 
 						// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
 						infowindow.setContent(content);
 						infowindow.open(map, marker);
 					} 
 				});
+				//*/
 			});
 
 			
