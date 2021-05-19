@@ -1,3 +1,10 @@
+//=============================================================================
+// statics
+//=============================================================================
+function createMarkerImage(src, size, options) {
+    var markerImage = new kakao.maps.MarkerImage(src, size, options);
+    return markerImage;            
+}
 
 //=============================================================================
 // kakao.maps.Map
@@ -6,11 +13,18 @@ const mapContainer = document.getElementById('map'); // 지도를 표시할 div
 
 const mapOption = {
 	center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
-	level: 5 // 지도의 확대 레벨
+	level: 3 // 지도의 확대 레벨
 };
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 const map = new kakao.maps.Map(mapContainer, mapOption);
+
+// 마커 클러스터러를 생성합니다 
+const clusterer = new kakao.maps.MarkerClusterer({
+	map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+	averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+	minLevel: 5 // 클러스터 할 최소 지도 레벨 
+});
 
 // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
 const mapTypeControl = new kakao.maps.MapTypeControl();
@@ -105,10 +119,10 @@ function panTo(lat, lng) {
 	map.panTo(moveLatLon);
 }
 
-var terrainLayer = false;
-var districtLayer = false;
+let terrainLayer = false;
+let districtLayer = false;
 function toggleOverlayMapTypeId(maptype) {
-	var changeMaptype;
+	let changeMaptype;
 
 	// maptype에 따라 지도에 추가할 지도타입을 결정합니다
 	if (maptype === 'terrain') {
@@ -139,7 +153,7 @@ function toggleOverlayMapTypeId(maptype) {
 // kakao.maps.services.Geocoder
 //=============================================================================
 // 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
+const geocoder = new kakao.maps.services.Geocoder();
 
 function searchAddrFromCoords(coords, callback) {
 	// 좌표로 행정동 주소 정보를 요청합니다

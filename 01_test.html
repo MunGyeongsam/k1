@@ -56,7 +56,7 @@
 		<div id="clickAddress"></div>
 		
 		
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services">
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
 			//appkey == JavaScript 키
 		</script>
 
@@ -67,16 +67,33 @@
 			let lng = 127.02770621963765;
 
 			let markers = new Map();
+			let markerImages = [];
+
 		</script>
 		<script type="text/javascript" src="kakao_map.js"></script>
 		
 		<script>
 
+			var imageSize = new kakao.maps.Size(72, 72);
+			var imageOptions = {  
+                spriteOrigin: new kakao.maps.Point(0, 0),    
+                spriteSize: new kakao.maps.Size(72, 72)  
+            }; 
+			let markerImg = createMarkerImage('mask-50.png', imageSize, imageOptions);
+
 			function addMarker(address, coord) {
-				var marker = new kakao.maps.Marker({ position: coord }); 
-				markers.set(address, marker);
+				var marker = new kakao.maps.Marker({ position: coord });
+				marker.setImage(markerImg);
 
 				marker.setMap(map);
+				console.log(marker);
+				
+				//var marker = new kakao.maps.Marker({ position: coord });
+				//marker.setMap(map);
+
+				clusterer.addMarker(marker);
+				 
+				markers.set(address, marker);
 			}
 
 			function remMarker(address) {
