@@ -60,6 +60,12 @@
 			//appkey == JavaScript 키
 		</script>
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js">
+			//엑셀을 읽기위해 라이브러리 추가.
+		</script>
+
+
+		<input type="file" id="excelFile" onchange="excelExport(event)"/>
 		<script>
 			//37.58468807390984
 			//126.96640550469013
@@ -74,8 +80,8 @@
 		
 		<script>
 
-			var imageSize = new kakao.maps.Size(72, 72);
-			var imageOptions = {  
+			let imageSize = new kakao.maps.Size(72, 72);
+			let imageOptions = {  
                 spriteOrigin: new kakao.maps.Point(0, 0),    
                 spriteSize: new kakao.maps.Size(72, 72)  
             }; 
@@ -86,7 +92,7 @@
 				marker.setImage(markerImg);
 
 				marker.setMap(map);
-				console.log(marker);
+				//console.log(marker);
 				
 				//var marker = new kakao.maps.Marker({ position: coord });
 				//marker.setMap(map);
@@ -100,9 +106,85 @@
 				var marker = markers.get(address);
 				if (marker)
 				{
+					clusterer.removeMarker(marker);
 					marker.setMap(null);
 					markers.delete(address);
 				}
+			}
+			
+			function excelExport(event){
+				var input = event.target;
+				var reader = new FileReader();
+				reader.onload = function(){
+					var fileData = reader.result;
+					var wb = XLSX.read(fileData, {type : 'binary'});
+					//wb.SheetNames.forEach(function(sheetName){
+					//	console.log('sheetName : '+sheetName);
+					//	var rowObj =XLSX.utils.sheet_to_json(wb.Sheets[sheetName]);
+					//	console.log(rowObj);
+					//})
+					var rowObj =XLSX.utils.sheet_to_json(wb.Sheets['경작지']);
+					rowObj.forEach(function(element){
+						var addr = element['경작지_1'];
+
+						var lat2;
+						var lng2;
+						addrToCoords(addr,  function(result, status) {
+							
+							if (status === kakao.maps.services.Status.OK) {
+
+								var ret = result[0];
+
+								if (result.length > 1)
+								{
+									var ret2 = result.find(e => e.address_name.indexOf('경북 상주시 모서면') >= 0);
+									if(!ret2)
+									{
+										ret2 = result.find(e => e.address_name.indexOf('경북 상주시') >= 0);
+										//console.log('2nd try');
+										//console.log(ret2);
+									}
+									
+									if(!ret2)
+									{
+										ret2 = result.find(e => e.address_name.indexOf('경북') >= 0);
+										//console.log('3rd try');
+										//console.log(ret2);
+									}
+									if (ret2)
+									{
+										ret = ret2;
+										//console.log('--->>> found :' + ret.address_name);
+									}
+									else
+									{
+										//console.log('===>>> not fund :' + addr);
+										//console.log(result);
+									}
+								}
+								let lat = ret.y;
+								let lng = ret.x;
+								panTo(lat, lng);
+								var coords = new kakao.maps.LatLng(ret.y, ret.x);
+								addMarker(ret.address_name, coords);
+								//console.log("--@{");
+								if (ret.address_name.indexOf('경북 상주시 모서면') < 0)
+								{
+									console.log('============ :' + addr + " >> " + ret.address_name);
+									console.log(result);
+								}
+								//console.log("--@}");
+							}
+							else
+							{
+								console.log('===>>> not fund :' + addr);
+								console.log(status);
+								console.log(result);
+							}
+						});
+					});
+				};
+				reader.readAsBinaryString(input.files[0]);
 			}
 			
 			infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
@@ -110,6 +192,19 @@
 			lat = 35.49797376993066;
 			lng = 127.02743804862237;
 			panTo(lat, lng);
+
+			////득수리0118-0004
+			//addrToCoords('경상북도 상주시 모서면 득수리 산118-4',  function(result, status) {
+			//	lat = result[0].y;
+			//	lng = result[0].x;
+			//	panTo(lat, lng);
+			//	var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			//	addMarker(result[0].address_name, coords);
+			//	console.log("--@{");
+			//	console.log(result);
+			//	console.log("--@}");
+			//});
+
 			map.setLevel(1);
 			toggleOverlayMapTypeId('use_district');
 
@@ -130,6 +225,10 @@
 				searchDetailAddrFromCoords(latlng, function(result, status) {
 					if (status === kakao.maps.services.Status.OK) {
 						const address = result[0].address.address_name;
+
+						
+						var resultDiv = document.getElementById('clickAddress'); 
+						resultDiv.innerHTML = address;
 
 						addrToCoords(address,  function(result, status) {
 							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
