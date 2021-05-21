@@ -33,8 +33,15 @@
 				</label>
 			</p>
 			<p>
-				<button onclick="toggleOverlayMapTypeId('terrain')">지형정보 보기</button>
-				<button onclick="toggleOverlayMapTypeId('use_district')">지적편집도 보기</button>
+				<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('terrain')">지형</button>
+				&nbsp;
+				<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('use_district')">지적편집</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button style='width:80px; height:50px' onclick="buttonClick('RECTANGLE')">사각형</button>
+				&nbsp;
+				<button style='width:80px; height:50px' onclick="buttonClick('POLYGON')">다각형</button>
+				&nbsp;
+				<button style='width:80px; height:50px' onclick="buttonClick('MARKER')">마커</button>
 			</p> 
 			
 			<p>
@@ -73,32 +80,77 @@
 			let lng = 127.02770621963765;
 
 			let markers = new Map();
-			let markerImages = [];
-
+			let markerImageOver = null;
+			let markerImageNormal = null;
+			let markerImageClick = null;
+			let selectedMarker = null;
 		</script>
+
+		<script>
+			let mouseOver = function(marker) {
+				if (!selectedMarker || selectedMarker !== marker) {
+					marker.setImage(markerImageOver);
+					marker.setZIndex(2);
+				}
+			}
+			let mouseOut = function(marker) {
+				if (!selectedMarker || selectedMarker !== marker) {
+					marker.setImage(markerImageNormal);
+					marker.setZIndex(0);
+				}
+			}
+			let mouseClick = function(marker) {
+				if (!selectedMarker || selectedMarker !== marker) {
+					//!!selectedMarker && selectedMarker.setImage(markerImageNormal);
+					if(selectedMarker)
+					{
+						selectedMarker.setZIndex(0);
+						selectedMarker.setImage(markerImageNormal);
+					}
+
+					marker.setImage(markerImageClick);
+				}
+				selectedMarker = marker;
+				marker.setZIndex(1);
+			}
+		</script>
+
 		<script type="text/javascript" src="kakao_map.js"></script>
 		
 		<script>
 
-			let imageSize = new kakao.maps.Size(72, 72);
-			let imageOptions = {  
-                spriteOrigin: new kakao.maps.Point(0, 0),    
-                spriteSize: new kakao.maps.Size(72, 72)  
-            }; 
-			let markerImg = createMarkerImage('mask-50.png', imageSize, imageOptions);
+			function createImage(w,h)
+			{
+				let imageSize = new kakao.maps.Size(w, h);
+				let imageOptions = {};
+				//let img = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markers_sprites2.png';
+				let img = 'mask-50.png';
+				return createMarkerImage(img, imageSize, imageOptions);
+			}
+
+			markerImageOver = createImage(72, 72);
+			markerImageNormal = createImage(50, 50);
+			markerImageClick = createImage(50, 50);
 
 			function addMarker(address, coord) {
-				var marker = new kakao.maps.Marker({ position: coord });
-				marker.setImage(markerImg);
+				var marker = new kakao.maps.Marker({ 
+					map:map,
+					title:address,
+					image:markerImageNormal,
+					border:5,
+					position: coord 
+				});
 
-				marker.setMap(map);
-				//console.log(marker);
-				
-				//var marker = new kakao.maps.Marker({ position: coord });
-				//marker.setMap(map);
+				marker.custom = {addr:address, tst:'taeeest'};
+				marker.mouseOver = function(){mouseOver(marker);};
+				marker.mouseOut = function(){mouseOut(marker);};
+				marker.mouseClick = function(){mouseClick(marker);};
+
+				kakao.maps.event.addListener(marker, 'mouseover', marker.mouseOver);
+				kakao.maps.event.addListener(marker, 'mouseout', marker.mouseOut);
+				kakao.maps.event.addListener(marker, 'click', marker.mouseClick);
 
 				clusterer.addMarker(marker);
-				 
 				markers.set(address, marker);
 			}
 
@@ -106,10 +158,67 @@
 				var marker = markers.get(address);
 				if (marker)
 				{
+					kakao.maps.event.removeListener(marker, 'mouseover', marker.mouseOver);
+					kakao.maps.event.removeListener(marker, 'mouseout', marker.mouseOut);
+					kakao.maps.event.removeListener(marker, 'click', marker.mouseClick);
+
 					clusterer.removeMarker(marker);
 					marker.setMap(null);
+
+					delete marker.custom;
+					delete marker.mouseOver;
+					delete marker.mouseOut;
+					delete marker.mouseClick;
+
 					markers.delete(address);
 				}
+			}
+
+			function mapClick(mouseEvent) {        
+				
+				// 클릭한 위도, 경도 정보를 가져옵니다 
+				var latlng = mouseEvent.latLng; 
+				
+				var message = 'Lat : ' + latlng.getLat();
+				message += ', Lng : ' + latlng.getLng();
+				
+				var resultDiv = document.getElementById('clickLatlng'); 
+				resultDiv.innerHTML = message;
+
+				searchDetailAddrFromCoords(latlng, function(result, status) {
+					if (status === kakao.maps.services.Status.OK) {
+						const address = result[0].address.address_name;
+
+						
+						var resultDiv = document.getElementById('clickAddress'); 
+						resultDiv.innerHTML = address;
+
+						addrToCoords(address,  function(result, status) {
+							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+							
+							if (markers.has(address))
+							{
+								remMarker(address);
+							}
+							else
+							{
+								addMarker(address, coords);
+								panTo(result[0].y, result[0].x);
+							}
+						});
+					}
+				});
+			}
+
+			function buttonClick(type) {
+
+				kakao.maps.event.removeListener(map, 'click', mapClick);
+				if(type == 'RECTANGLE')
+					selectOverlay(type);
+				else if(type == 'POLYGON')
+					selectOverlay(type);
+				else
+					kakao.maps.event.addListener(map, 'click', mapClick);
 			}
 			
 			function excelExport(event){
@@ -145,6 +254,17 @@
 										//console.log(ret2);
 									}
 									
+									//if(!ret2)
+									//{
+									//	var r = addr.substring(addr.length-9);
+									//	var l = addr.substring(0, addr.length-r.length);
+									//	addrToCoords(l+'산'+r, this);
+									//	//console.log('dddddddddddd :'+r+'산'+l);
+									//	console.log(this);
+									//	console.log('dddddddddddd :'+r+'산'+l);
+									//	return;
+									//}
+
 									if(!ret2)
 									{
 										ret2 = result.find(e => e.address_name.indexOf('경북') >= 0);
@@ -211,72 +331,7 @@
 
 			// 지도에 클릭 이벤트를 등록합니다
 			// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
-			kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
-				
-				// 클릭한 위도, 경도 정보를 가져옵니다 
-				var latlng = mouseEvent.latLng; 
-				
-				var message = 'Lat : ' + latlng.getLat();
-				message += ', Lng : ' + latlng.getLng();
-				
-				var resultDiv = document.getElementById('clickLatlng'); 
-				resultDiv.innerHTML = message;
-
-				searchDetailAddrFromCoords(latlng, function(result, status) {
-					if (status === kakao.maps.services.Status.OK) {
-						const address = result[0].address.address_name;
-
-						
-						var resultDiv = document.getElementById('clickAddress'); 
-						resultDiv.innerHTML = address;
-
-						addrToCoords(address,  function(result, status) {
-							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-							
-							if (markers.has(address))
-							{
-								remMarker(address);
-							}
-							else
-							{
-								addMarker(address, coords);
-								panTo(result[0].y, result[0].x);
-							}
-						});
-					}
-				});
-				/*
-				searchDetailAddrFromCoords(latlng, function(result, status) {
-					
-					if (status === kakao.maps.services.Status.OK) {
-						var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-						detailAddr += '<div>지번 주소 : ' 
-							+ result[0].address.address_name
-							+ '</div>';
-						
-						var content = '<div class="bAddr">' +
-										'<span class="title">법정동 주소정보</span>' + 
-										detailAddr + 
-									'</div>';
-
-						// 마커를 클릭한 위치에 표시합니다 
-						marker.setPosition(mouseEvent.latLng);
-						marker.setMap(map);
-						console.log(result);
-
-						panTo(latlng.getLat(), latlng.getLng())
-
-						// 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-						infowindow.setContent(content);
-						infowindow.open(map, marker);
-					} 
-				});
-				//*/
-			});
-
-			
-
-
+			kakao.maps.event.addListener(map, 'click', mapClick);
 		</script>
 
 		<!--

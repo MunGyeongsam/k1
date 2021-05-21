@@ -114,7 +114,7 @@ function toggleOverlayMapTypeId(maptype) {
 const clusterer = new kakao.maps.MarkerClusterer({
 	map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
 	averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	minLevel: 3 // 클러스터 할 최소 지도 레벨 
+	minLevel: 5 // 클러스터 할 최소 지도 레벨 
 });
 
 //=============================================================================
@@ -135,4 +135,53 @@ function searchDetailAddrFromCoords(coords, callback) {
 
 function addrToCoords(address, callback) {
 	geocoder.addressSearch(address, callback);
+}
+
+
+//=============================================================================
+// kakao.maps.drawing
+//=============================================================================
+const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
+    drawingMode: [ // drawing manager로 제공할 그리기 요소 모드입니다
+        kakao.maps.drawing.OverlayType.RECTANGLE,
+        kakao.maps.drawing.OverlayType.POLYGON
+    ],
+    // 사용자에게 제공할 그리기 가이드 툴팁입니다
+    // 사용자에게 도형을 그릴때, 드래그할때, 수정할때 가이드 툴팁을 표시하도록 설정합니다
+    guideTooltip: ['draw', 'drag', 'edit'], 
+    markerOptions: { // 마커 옵션입니다 
+        draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다 
+        removable: true // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다  
+    },
+    rectangleOptions: {
+        draggable: true,
+        removable: true,
+        editable: true,
+        strokeColor: '#39f', // 외곽선 색
+        fillColor: '#39f', // 채우기 색
+        fillOpacity: 0.5 // 채우기색 투명도
+    },
+    polygonOptions: {
+        draggable: true,
+        removable: true,
+        editable: true,
+        strokeColor: '#39f',
+        fillColor: '#39f',
+        fillOpacity: 0.5,
+        hintStrokeStyle: 'dash',
+        hintStrokeOpacity: 0.5
+    }
+};
+
+// 위에 작성한 옵션으로 Drawing Manager를 생성합니다
+const manager = new kakao.maps.drawing.DrawingManager(options);
+
+// 버튼 클릭 시 호출되는 핸들러 입니다
+function selectOverlay(type) {
+    // 그리기 중이면 그리기를 취소합니다
+    manager.cancel();
+
+    // 클릭한 그리기 요소 타입을 선택합니다
+    manager.select(kakao.maps.drawing.OverlayType[type]);
 }
