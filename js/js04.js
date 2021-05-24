@@ -34,6 +34,7 @@ imgs.get = function (marker)
     let ovr = imgs.over;
     let sel = imgs.selected;
     let sov = imgs.selectedOvr;
+
     for(let i=1; i<=10; ++i)
     {
         nrm.push(new kakao.maps.MarkerImage(`./res/normal/${i}B.png`, sizeN));

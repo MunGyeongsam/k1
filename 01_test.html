@@ -92,14 +92,13 @@
 		<script type="text/javascript" src="./js/js03.js"></script>
 		<script type="text/javascript" src="./js/js04.js"></script>
 		<script type="text/javascript" src="./js/js05.js"></script>
-		
+
 		<input type="text" onkeyup="keyupFunction(event)"/>
 		<input type="file" id="excelFile" onchange="loadExcel(event)"/>
 
 		<script>
 			function keyupFunction(e)
 			{
-				console.log(e);
 				let state = markerStateEnum.NOT_ASSIGNED;
 				if (e.key == '1') {
 					state = markerStateEnum.NOT_ASSIGNED;
@@ -111,7 +110,14 @@
 					state = markerStateEnum.DONE;
 				} else if (e.key == '5') {
 					state = markerStateEnum.IMPOSSIBLE;
+				} else if (e.key == 'a') {
+					ptInRectTest(true);
+					return;
+				} else if (e.key == 'b') {
+					ptInRectTest(false);
+					return;
 				} else {
+					console.log(manager.getData());
 					return;
 				} 
 
@@ -120,15 +126,69 @@
 					if (value.kkk.selected)
 					{
 						value.kkk.state = state;
+						value.kkk.selected = false;
 						_updateMarker(value);
 					}
 				});
+			}
+
+			function ptInRectTest(onoff)
+			{
+				let data = manager.getData();
+				let rects = data.rectangle;
+				let polys = data.polygon;
+
+				let LEN = rects.length;
+				if (LEN > 0)
+				{
+					forAllMarker(function(value, key, map)
+					{
+						for(let i=0; i<LEN; ++i)
+						{
+							let s = rects[i].sPoint;
+							let e = rects[i].ePoint;
+							if (ptInRect(value.getPosition(), s, e))
+							{
+								value.kkk.selected = onoff;
+								_updateMarker(value);
+							}
+						}
+					});
+				}
+
+				LEN = polys.length;
+				if (LEN > 0)
+				{
+					forAllMarker(function(value, key, map)
+					{
+						for(let i=0; i<LEN; ++i)
+						{
+							let points = polys[i].points;
+							if (ptInPoly(value.getPosition(), points))
+							{
+								value.kkk.selected = onoff;
+								_updateMarker(value);
+							}
+						}
+					});
+				}
 			}
 			let selectedMarker = null;
 			rightClickMarker = function(marker) {
 				remMarker(marker.getTitle());
 			}
 			mouseOverMarker = function(marker) {
+				
+				var latlng = marker.getPosition();
+				console.log(latlng);
+				var message = 'Lat : ' + latlng.getLat();
+				message += ', Lng : ' + latlng.getLng();
+				
+				var resultDiv = document.getElementById('clickLatlng'); 
+				resultDiv.innerHTML = message;
+
+				resultDiv = document.getElementById('clickAddress');
+				resultDiv.innerHTML = marker.getTitle();
 			}
 			mouseOutMarker = function(marker) {
 			}

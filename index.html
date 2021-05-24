@@ -40,20 +40,15 @@
 			var lng = 126.570667;
 			var lat = 37.58468807390984;
 			var lng = 126.96640550469013;
+			let initOption = {
+				container : document.getElementById('map'),
+				mapOption : {
+					center : new kakao.maps.LatLng(lat, lng), 
+					level : 3
+				}
+			};
 		</script>
-
-		<script type="text/javascript" src="kakao_map.js"></script>
-
-		<!--
-
-			<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=LIBRARY"></script>
-
-			services 라이브러리 불러오기
-			<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services"></script>
-
-			services와 clusterer, drawing 라이브러리 불러오기
-			<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APIKEY&libraries=services,clusterer,drawing"></script>
-		-->
+		<script type="text/javascript" src="./js/js02.js"></script>
 
 	</body>
 </html>
