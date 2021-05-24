@@ -62,6 +62,9 @@
 		<div id="clickLatlng"></div>
 		<div id="clickAddress"></div>
 		
+		<script>
+			
+		</script>
 		
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
 			//appkey == JavaScript 키
@@ -71,145 +74,126 @@
 			//엑셀을 읽기위해 라이브러리 추가.
 		</script>
 
-
-		<input type="file" id="excelFile" onchange="excelExport(event)"/>
+		<script type="text/javascript" src="./js/js01.js"></script>
 		<script>
 			//37.58468807390984
 			//126.96640550469013
-			let lat = 37.498004414546934;
-			let lng = 127.02770621963765;
+			let lat = 36.30498817138545;
+			let lng = 127.87096679485826;
+			
+			initOption.container = document.getElementById('map');
+			initOption.mapOption = {
+				center : new kakao.maps.LatLng(lat, lng), 
+				level : 1
+			};
 
-			let markers = new Map();
-			let markerImageOver = null;
-			let markerImageNormal = null;
-			let markerImageClick = null;
-			let selectedMarker = null;
 		</script>
+		<script type="text/javascript" src="./js/js02.js"></script>
+		<script type="text/javascript" src="./js/js03.js"></script>
+		<script type="text/javascript" src="./js/js04.js"></script>
+		<script type="text/javascript" src="./js/js05.js"></script>
+		
+		<input type="text" onkeyup="keyupFunction(event)"/>
+		<input type="file" id="excelFile" onchange="loadExcel(event)"/>
 
 		<script>
-			let mouseOver = function(marker) {
-				if (!selectedMarker || selectedMarker !== marker) {
-					marker.setImage(markerImageOver);
-					marker.setZIndex(2);
-				}
-			}
-			let mouseOut = function(marker) {
-				if (!selectedMarker || selectedMarker !== marker) {
-					marker.setImage(markerImageNormal);
-					marker.setZIndex(0);
-				}
-			}
-			let mouseClick = function(marker) {
-				if (!selectedMarker || selectedMarker !== marker) {
-					//!!selectedMarker && selectedMarker.setImage(markerImageNormal);
-					if(selectedMarker)
-					{
-						selectedMarker.setZIndex(0);
-						selectedMarker.setImage(markerImageNormal);
-					}
+			function keyupFunction(e)
+			{
+				console.log(e);
+				let state = markerStateEnum.NOT_ASSIGNED;
+				if (e.key == '1') {
+					state = markerStateEnum.NOT_ASSIGNED;
+				} else if (e.key == '2') {
+					state = markerStateEnum.ASSIGNED;
+				} else if (e.key == '3') {
+					state = markerStateEnum.IN_WORKING;
+				} else if (e.key == '4') {
+					state = markerStateEnum.DONE;
+				} else if (e.key == '5') {
+					state = markerStateEnum.IMPOSSIBLE;
+				} else {
+					return;
+				} 
 
-					marker.setImage(markerImageClick);
-				}
-				selectedMarker = marker;
-				marker.setZIndex(1);
+				forAllMarker(function(value, key, map)
+				{
+					if (value.kkk.selected)
+					{
+						value.kkk.state = state;
+						_updateMarker(value);
+					}
+				});
+			}
+			let selectedMarker = null;
+			rightClickMarker = function(marker) {
+				remMarker(marker.getTitle());
+			}
+			mouseOverMarker = function(marker) {
+			}
+			mouseOutMarker = function(marker) {
+			}
+			clickMarker = function(marker) {
+				panTo(marker.getPosition());
+			}
+
+			function forAllElement(rowObj)
+			{
+        		rowObj.forEach(function(element){
+					var addr0 = ('경작지' in element) ? element['경작지'] : '모서면';
+					var addr = addr0 + ' ' + element['경작지_1'];
+
+					addressSearch(addr,  function(result, status) {
+						if (status === kakao.maps.services.Status.OK) {
+							var ret = result[0];
+							
+							if (result.length > 1)
+							{
+								var ret2 = result.find(e => e.address_name.indexOf('경북 상주시 모서면') >= 0);
+								if (!ret2)
+									ret2 = result.find(e => e.address_name.indexOf('경북 상주시') >= 0);
+								if (ret2)
+									ret = ret2;
+							}
+
+							addMarker(ret.address_name, new kakao.maps.LatLng(ret.y, ret.x));
+							if (ret.address_name.indexOf('경북 상주시 모서면') < 0)
+							{
+								console.log('============ :' + addr + " >> " + ret.address_name);
+								console.log(result);
+							}
+						}
+						else
+						{
+							console.log('===>>> not fund :' + addr);
+							console.log(status);
+							console.log(result);
+						}
+					});
+				});
+			}
+
+			let loadExcel = function(event) {
+				excelExport(event, forAllElement);
 			}
 		</script>
 
-		<script type="text/javascript" src="kakao_map.js"></script>
 		
 		<script>
-
-			function createImage(w,h)
-			{
-				let imageSize = new kakao.maps.Size(w, h);
-				let imageOptions = {};
-				//let img = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markers_sprites2.png';
-				let img = 'mask-50.png';
-				return createMarkerImage(img, imageSize, imageOptions);
-			}
-
-			markerImageOver = createImage(72, 72);
-			markerImageNormal = createImage(50, 50);
-			markerImageClick = createImage(50, 50);
-
-			function addMarker(address, coord) {
-				var marker = new kakao.maps.Marker({ 
-					map:map,
-					title:address,
-					image:markerImageNormal,
-					border:5,
-					position: coord 
-				});
-
-				marker.custom = {addr:address, tst:'taeeest'};
-				marker.mouseOver = function(){mouseOver(marker);};
-				marker.mouseOut = function(){mouseOut(marker);};
-				marker.mouseClick = function(){mouseClick(marker);};
-
-				kakao.maps.event.addListener(marker, 'mouseover', marker.mouseOver);
-				kakao.maps.event.addListener(marker, 'mouseout', marker.mouseOut);
-				kakao.maps.event.addListener(marker, 'click', marker.mouseClick);
-
-				clusterer.addMarker(marker);
-				markers.set(address, marker);
-			}
-
-			function remMarker(address) {
-				var marker = markers.get(address);
-				if (marker)
-				{
-					kakao.maps.event.removeListener(marker, 'mouseover', marker.mouseOver);
-					kakao.maps.event.removeListener(marker, 'mouseout', marker.mouseOut);
-					kakao.maps.event.removeListener(marker, 'click', marker.mouseClick);
-
-					clusterer.removeMarker(marker);
-					marker.setMap(null);
-
-					delete marker.custom;
-					delete marker.mouseOver;
-					delete marker.mouseOut;
-					delete marker.mouseClick;
-
-					markers.delete(address);
-				}
-			}
-
-			function mapClick(mouseEvent) {        
-				
-				// 클릭한 위도, 경도 정보를 가져옵니다 
-				var latlng = mouseEvent.latLng; 
-				
+			function mapClick(mouseEvent) {  
+				var latlng = mouseEvent.latLng;
 				var message = 'Lat : ' + latlng.getLat();
 				message += ', Lng : ' + latlng.getLng();
 				
 				var resultDiv = document.getElementById('clickLatlng'); 
 				resultDiv.innerHTML = message;
 
-				searchDetailAddrFromCoords(latlng, function(result, status) {
-					if (status === kakao.maps.services.Status.OK) {
-						const address = result[0].address.address_name;
+				centerOfAddress(latlng, function(address, coords) {
+					addMarker(address, coords);
 
-						
-						var resultDiv = document.getElementById('clickAddress'); 
-						resultDiv.innerHTML = address;
-
-						addrToCoords(address,  function(result, status) {
-							var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-							
-							if (markers.has(address))
-							{
-								remMarker(address);
-							}
-							else
-							{
-								addMarker(address, coords);
-								panTo(result[0].y, result[0].x);
-							}
-						});
-					}
+					resultDiv = document.getElementById('clickAddress'); 
+					resultDiv.innerHTML = address;
 				});
 			}
-
 			function buttonClick(type) {
 
 				kakao.maps.event.removeListener(map, 'click', mapClick);
@@ -217,102 +201,13 @@
 					selectOverlay(type);
 				else if(type == 'POLYGON')
 					selectOverlay(type);
-				else
+				else if(type == 'MARKER')
 					kakao.maps.event.addListener(map, 'click', mapClick);
 			}
 			
-			function excelExport(event){
-				var input = event.target;
-				var reader = new FileReader();
-				reader.onload = function(){
-					var fileData = reader.result;
-					var wb = XLSX.read(fileData, {type : 'binary'});
-					//wb.SheetNames.forEach(function(sheetName){
-					//	console.log('sheetName : '+sheetName);
-					//	var rowObj =XLSX.utils.sheet_to_json(wb.Sheets[sheetName]);
-					//	console.log(rowObj);
-					//})
-					var rowObj =XLSX.utils.sheet_to_json(wb.Sheets['경작지']);
-					rowObj.forEach(function(element){
-						var addr = element['경작지_1'];
-
-						var lat2;
-						var lng2;
-						addrToCoords(addr,  function(result, status) {
-							
-							if (status === kakao.maps.services.Status.OK) {
-
-								var ret = result[0];
-
-								if (result.length > 1)
-								{
-									var ret2 = result.find(e => e.address_name.indexOf('경북 상주시 모서면') >= 0);
-									if(!ret2)
-									{
-										ret2 = result.find(e => e.address_name.indexOf('경북 상주시') >= 0);
-										//console.log('2nd try');
-										//console.log(ret2);
-									}
-									
-									//if(!ret2)
-									//{
-									//	var r = addr.substring(addr.length-9);
-									//	var l = addr.substring(0, addr.length-r.length);
-									//	addrToCoords(l+'산'+r, this);
-									//	//console.log('dddddddddddd :'+r+'산'+l);
-									//	console.log(this);
-									//	console.log('dddddddddddd :'+r+'산'+l);
-									//	return;
-									//}
-
-									if(!ret2)
-									{
-										ret2 = result.find(e => e.address_name.indexOf('경북') >= 0);
-										//console.log('3rd try');
-										//console.log(ret2);
-									}
-									if (ret2)
-									{
-										ret = ret2;
-										//console.log('--->>> found :' + ret.address_name);
-									}
-									else
-									{
-										//console.log('===>>> not fund :' + addr);
-										//console.log(result);
-									}
-								}
-								let lat = ret.y;
-								let lng = ret.x;
-								panTo(lat, lng);
-								var coords = new kakao.maps.LatLng(ret.y, ret.x);
-								addMarker(ret.address_name, coords);
-								//console.log("--@{");
-								if (ret.address_name.indexOf('경북 상주시 모서면') < 0)
-								{
-									console.log('============ :' + addr + " >> " + ret.address_name);
-									console.log(result);
-								}
-								//console.log("--@}");
-							}
-							else
-							{
-								console.log('===>>> not fund :' + addr);
-								console.log(status);
-								console.log(result);
-							}
-						});
-					});
-				};
-				reader.readAsBinaryString(input.files[0]);
-			}
 			
 			infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
 			
-			lat = 35.49797376993066;
-			lng = 127.02743804862237;
-			panTo(lat, lng);
-
 			////득수리0118-0004
 			//addrToCoords('경상북도 상주시 모서면 득수리 산118-4',  function(result, status) {
 			//	lat = result[0].y;
@@ -332,6 +227,7 @@
 			// 지도에 클릭 이벤트를 등록합니다
 			// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 			kakao.maps.event.addListener(map, 'click', mapClick);
+			kakao.maps.event.addListener(map, 'rightclick', function($) {clearMarkers();});
 		</script>
 
 		<!--
