@@ -35,19 +35,28 @@ imgs.get = function (marker)
     let sel = imgs.selected;
     let sov = imgs.selectedOvr;
 
+    //let path = 'https://raw.githubusercontent.com/MunGyeongsam/k1/main';
+    //let path = 'https://github.com/MunGyeongsam/k1/blob/main';
     for(let i=1; i<=10; ++i)
     {
-        nrm.push(new kakao.maps.MarkerImage(`./res/normal/${i}B.png`, sizeN));
-        ovr.push(new kakao.maps.MarkerImage(`./res/over/${i}B.png`, sizeO));
-        sel.push(new kakao.maps.MarkerImage(`./res/select/${i}B.png`, sizeN));
-        sov.push(new kakao.maps.MarkerImage(`./res/selectover/${i}B.png`, sizeO));
+        //nrm.push(new kakao.maps.MarkerImage(path+`/res/normal/${i}B.png`, sizeN));
+        //ovr.push(new kakao.maps.MarkerImage(path+`/res/over/${i}B.png`, sizeO));
+        //sel.push(new kakao.maps.MarkerImage(path+`/res/select/${i}B.png`, sizeN));
+        //sov.push(new kakao.maps.MarkerImage(path+`/res/selectover/${i}B.png`, sizeO));
+        let is = i.toString();
+        if (i!==10) is = '0'+is;
+        
+        nrm.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeN));
+        ovr.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeO));
+        sel.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeN));
+        sov.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeO));
     }
 }
 
 const clusterer = new kakao.maps.MarkerClusterer({
 	map: map,               // 마커들을 클러스터로 관리하고 표시할 지도 객체 
 	averageCenter: true,    // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	minLevel: 5             // 클러스터 할 최소 지도 레벨 
+	minLevel: 8             // 클러스터 할 최소 지도 레벨 
 });
 
 // custumize in each html
@@ -61,12 +70,16 @@ const _updateMarker =  function(marker)
 {
     marker.setImage(imgs.get(marker));
 
-    if(marker.kkk.mouseover)
+    if(marker.kkk.mouseover) {
         marker.setZIndex(2);
-    else if(marker.kkk.selected)
+        //marker.kkk.infowindow.setZIndex(2);
+    } else if(marker.kkk.selected) {
         marker.setZIndex(1);
-    else
+        //marker.kkk.infowindow.setZIndex(1);
+    }else {
         marker.setZIndex(0);
+        //marker.kkk.infowindow.setZIndex(0);
+    }
 }
 
 const _handlerMouseOver = function(marker)
@@ -93,7 +106,6 @@ const _handlerMouseClick = function(marker)
 const _handlerMouseRightClick = function(marker)
 {
     rightClickMarker(marker);
-    _updateMarker(marker);
 }
 
 function forAllMarker(callback)
@@ -118,11 +130,17 @@ function addMarker(address, coord, addtional = {})
         position: coord 
     });
 
+    //var infowindow = new kakao.maps.InfoWindow({
+    //    map: map,
+    //    position: new kakao.maps.LatLng(coord.getLat()+0.00004, coord.getLng()),
+    //    content: '홍길동'
+    //});
     clusterer.addMarker(marker);
     markers.set(address, marker);
 
     marker.addtional = addtional;
     marker.kkk = {
+        //infowindow:infowindow,
         state: markerStateEnum.NOT_ASSIGNED,
         selected: false,
         mouseover: false
@@ -141,6 +159,7 @@ function addMarker(address, coord, addtional = {})
 
 function resetMarker(marker)
 {
+    //marker.kkk.infowindow.close();
 
     kakao.maps.event.removeListener(marker, 'mouseover', marker.mouseOver);
     kakao.maps.event.removeListener(marker, 'mouseout', marker.mouseOut);
