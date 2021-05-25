@@ -47,9 +47,9 @@ imgs.get = function (marker)
         if (i!==10) is = '0'+is;
         
         nrm.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeN));
-        ovr.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeO));
-        sel.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeN));
-        sov.push(new kakao.maps.MarkerImage(`res_marker_normal_${is}.png`, sizeO));
+        ovr.push(new kakao.maps.MarkerImage(`res_marker_over_${is}.png`, sizeO));
+        sel.push(new kakao.maps.MarkerImage(`res_marker_select_${is}.png`, sizeN));
+        sov.push(new kakao.maps.MarkerImage(`res_marker_selectover_${is}.png`, sizeO));
     }
 }
 
