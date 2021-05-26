@@ -1,54 +1,73 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>kday - prog</title>
-		<meta charset="utf-8">
-		<style>
-			.map {
-				border: 2px outset blue;
-				background-color:black;
+
+<head>
+	<title>kday - prog</title>
+	<meta charset="utf-8">
+	<style>
+		.map {
+			border: 2px outset blue;
+			background-color: black;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>kday</h1>
+	<img src="https://lh3.googleusercontent.com/8W1IPj5IHaGj3LFdwi6viCgcOtF3dUX6kQQkPQMrz66r3hEKKBi07OCCKIGciYxOwaZU7CkPcgc9FwccaL39ZcN0dMDwpTWF7gS_QOzlW7CS7oKXsklQlAWj613g7849Q2YVoJjT85xSp3vfd9uzmcVE2c7CybTTT8pFmMJ0O1ETL7drmkp8ywGcPmfzo7N_AtXSRmaYl4MY_BE-9rRtnI4lEvFLUgJFn3nYer4kbnUetOnftbueYuQP6-xEg8SPfuWEAuCImHm8Fd2B2GIkHGioNe9bigur5XgUQbP7OmGn-Fy5r16XYNxwYUBHXeszOy8euiQYglgQU98mncwZZxM4u7Pq9Y88je5zYLBY7A32bE6zqa6qhpIZsceHAd2IUTHeU8_k2iKQHYFG2uWODdAavNkLTLzKINEkjs6eeFIubDOxpJ1G_N4mn7IfFcJ9JhbwrvLdhI2MxdIei8BaC0a4ewCviVYyLcto6Io4flxpv3n24dKLdZH4a6kubI0eGuJtTbpProj7gS1U0w7RPkb_7qFK0abtbXHzbOTGFpBruegjpdAheQWhEIg4BtGy9S7eFlCken1w_yy0XDwNrV8q52JNzHMIhXA3ZITFZAy6CjlyRei6jV67fj0_2X9P3uj0ABBi2JQYde-X3xv42zUJFXZjulfJvoAYG7BavMZKnjg8YSnI3hV42n6OgQ45DufYZ0rKY6O77xBh6zAQVq1dhw=w1346-h1009-no?authuser=0"
+		width="25%">
+
+	<h1>WEB</h1>
+	<h2>
+		<ol>
+			<li>
+				<a target="blank" title="Web 강좌" href="https://opentutorials.org/course/3084">WEB1 - HTML & Internet</a>
+			</li>
+			<li>
+				<a target="blank" title="Tag 문서" href="https://www.w3schools.com/tags/default.asp">HTML Element
+					Reference</a>
+			</li>
+			<li>
+				<a target="blank" title="무료 아이콘" href="https://icons8.com/icons">Free Icons</a>
+			</li>
+			<li>
+				<a target="blank" title="그리드 시스템" href="00_grid_system.html">Grid System</a>
+			</li>
+			<li>
+				<a target="blank" title="맵 테스트" href="01_test.html">Map Test</a>
+			</li>
+			<li>
+				<a target="blank" title="관리자" href="02_assignment.html">Assignment</a>
+			</li>
+		</ol>
+	</h2>
+
+	<!--div id="map" style="width:100%;height:350px;"></div-->
+	<!--div id="map" style="width:800px;height:350px;"></div-->
+	<div class="map" id="map" style="width:100%;height:400px;"></div>
+
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
+            //appkey == JavaScript 키
+		</script>
+
+	<script>
+		var lat = 33.450701;
+		var lng = 126.570667;
+		var lat = 37.58468807390984;
+		var lng = 126.96640550469013;
+		let initOption = {
+			container: document.getElementById('map'),
+			mapOption: {
+				center: new kakao
+					.maps
+					.LatLng(lat, lng),
+				level: 3
 			}
-		</style>
-	</head>
+		};
+	</script>
+	<script type="text/javascript" src="./js/js02.js"></script>
 
-	<body>
-		<h1>kday</h1>
-		<img src="https://lh3.googleusercontent.com/8W1IPj5IHaGj3LFdwi6viCgcOtF3dUX6kQQkPQMrz66r3hEKKBi07OCCKIGciYxOwaZU7CkPcgc9FwccaL39ZcN0dMDwpTWF7gS_QOzlW7CS7oKXsklQlAWj613g7849Q2YVoJjT85xSp3vfd9uzmcVE2c7CybTTT8pFmMJ0O1ETL7drmkp8ywGcPmfzo7N_AtXSRmaYl4MY_BE-9rRtnI4lEvFLUgJFn3nYer4kbnUetOnftbueYuQP6-xEg8SPfuWEAuCImHm8Fd2B2GIkHGioNe9bigur5XgUQbP7OmGn-Fy5r16XYNxwYUBHXeszOy8euiQYglgQU98mncwZZxM4u7Pq9Y88je5zYLBY7A32bE6zqa6qhpIZsceHAd2IUTHeU8_k2iKQHYFG2uWODdAavNkLTLzKINEkjs6eeFIubDOxpJ1G_N4mn7IfFcJ9JhbwrvLdhI2MxdIei8BaC0a4ewCviVYyLcto6Io4flxpv3n24dKLdZH4a6kubI0eGuJtTbpProj7gS1U0w7RPkb_7qFK0abtbXHzbOTGFpBruegjpdAheQWhEIg4BtGy9S7eFlCken1w_yy0XDwNrV8q52JNzHMIhXA3ZITFZAy6CjlyRei6jV67fj0_2X9P3uj0ABBi2JQYde-X3xv42zUJFXZjulfJvoAYG7BavMZKnjg8YSnI3hV42n6OgQ45DufYZ0rKY6O77xBh6zAQVq1dhw=w1346-h1009-no?authuser=0" width="25%">
+</body>
 
-		<h2>WEB</h2>
-		<h3>
-			<ol>
-				<li><a target="blank" title="Web 강좌" href="https://opentutorials.org/course/3084">WEB1 - HTML & Internet</a></li>
-				<li><a target="blank" title="Tag 문서" href="https://www.w3schools.com/tags/default.asp">HTML Element Reference</a></li>
-				<li><a target="blank" title="무료 아이콘" href="https://icons8.com/icons">Free Icons</a></li>
-				<li><a target="blank" title="맵 테스트" href="01_test.html">Map Test</a></li>
-			</ol>
-		</h3>
-
-		
-		<!--div id="map" style="width:100%;height:350px;"></div-->
-		<!--div id="map" style="width:800px;height:350px;"></div-->
-		<div class="map" id="map" style="width:100%;height:400px;"></div>
-		
-		
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
-			//appkey == JavaScript 키
-		</script>
-
-		<script>
-			var lat = 33.450701;
-			var lng = 126.570667;
-			var lat = 37.58468807390984;
-			var lng = 126.96640550469013;
-			let initOption = {
-				container : document.getElementById('map'),
-				mapOption : {
-					center : new kakao.maps.LatLng(lat, lng), 
-					level : 3
-				}
-			};
-		</script>
-		<script type="text/javascript" src="./js/js02.js"></script>
-
-	</body>
 </html>

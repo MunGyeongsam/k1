@@ -12,11 +12,11 @@ function addressSearch(address, callback) {
 }
 
 function centerOfAddress(coords, callback) {
-	searchDetailAddrFromCoords(coords, function(result1, status1) {
+	searchDetailAddrFromCoords(coords, function (result1, status1) {
 		if (status1 === kakao.maps.services.Status.OK) {
 			const address = result1[0].address.address_name;
 
-			addressSearch(address, function(result2, status2){
+			addressSearch(address, function (result2, status2) {
 				if (status2 === kakao.maps.services.Status.OK)
 					callback(address, new kakao.maps.LatLng(result2[0].y, result2[0].x));
 			});

@@ -2,71 +2,136 @@
 <html>
 
 <head>
-	<title>k MapTest01</title>
-	<meta charset="utf-8">
-	<style>
-		.map {
-			border: 2px outset blue;
-			background-color: black;
+	<title>HTML DIV태그</title>
+	<script>
+		const SW = window.innerWidth;
+		const SH = window.innerHeight;
+		const HW = SW / 3;
+            //grid-auto-rows: minmax(200px, auto);
+	</script>
+	<style type="text/css">
+		.wrapper {
+			grid-gap: 10px;
+			display: grid;
+			grid-template-columns: 400px 700px auto;
+			grid-template-rows: 100px 200px 800px auto 200px;
 		}
 
-		.ui {
-			border: 2px outset blue;
-			background-color: rgb(151, 151, 151);
+		.one {
+			grid-column: 1 / 4;
+			grid-row: 1;
+			color: #000000;
+			background: #4675d9cc;
+			border: 1px solid #4674D9;
+			text-align: center;
+		}
+
+		.two {
+			grid-column: 1 / 4;
+			grid-row: 2 / 3;
+			color: #000000;
+			background: #aeb826cc;
+			border: 1px solid #4674D9;
+			text-align: left;
+		}
+
+		.three {
+			grid-column: 1 / 2;
+			grid-row: 3 / 4;
+			color: #000000;
+			background: rgba(255, 89, 90, 0.8);
+			border: 1px solid #4674D9;
+			text-align: left;
+		}
+
+		.four {
+			grid-column: 2 / 4;
+			grid-row: 3;
+			color: #000000;
+			background: #b32727cc;
+			border: 1px solid #4674D9;
+			text-align: left;
+		}
+
+		.five {
+			grid-column: 1 / 4;
+			grid-row: 4;
+			color: #000000;
+			background: #6e6e59cc;
+			border: 1px solid #4674D9;
+			text-align: left;
+		}
+
+		.six {
+			grid-column: 1 / 4;
+			grid-row: 5;
+			color: #000000;
+			background: #f3f727cc;
+			border: 1px solid #4674D9;
+			text-align: left;
 		}
 	</style>
-
 </head>
 
 <body>
-	<h2><a title="Back" href="index.html">Back</a></h2>
-
-	<div class="ui" id="ui" style="width:100%;height:160px;">
-		<p>
-			<label>Zoom
-				<label><input onclick="setZoomable(true)" type="radio" name="zoom" value="on"> ON</label>
-				<label><input onclick="setZoomable(false)" type="radio" name="zoom" value="off"> OFF</label>
-			</label>
-		</p>
-		<p>
-			<label>Move
-				<label><input onclick="setDraggable(true)" type="radio" name="move" value="on"> ON</label>
-				<label><input onclick="setDraggable(false)" type="radio" name="move" value="off"> OFF</label>
-			</label>
-		</p>
-		<p>
-			<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('terrain')">지형</button>
-			&nbsp;
-			<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('use_district')">지적편집</button>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button style='width:80px; height:50px' onclick="buttonClick('RECTANGLE')">사각형</button>
-			&nbsp;
-			<button style='width:80px; height:50px' onclick="buttonClick('POLYGON')">다각형</button>
-			&nbsp;
-			<button style='width:80px; height:50px' onclick="buttonClick('MARKER')">마커</button>
-		</p>
-
-		<p>
-			<label for="cars">Choose a car:</label>
-
-			<select name="cars" id="cars">
-				<option value="volvo">Volvo</option>
-				<option value="saab">Saab</option>
-				<option value="mercedes">Mercedes</option>
-				<option value="audi">Audi</option>
-			</select>
-		</p>
+	<div class="wrapper">
+		<div class="one">
+			<h1>One</h1>
+		</div>
+		<div class="two">
+			<p>
+				<label>Zoom
+					<label><input onclick="setZoomable(true)" type="radio" name="zoom" value="on"> ON</label>
+					<label><input onclick="setZoomable(false)" type="radio" name="zoom" value="off"> OFF</label>
+				</label>
+			</p>
+			<p>
+				<label>Move
+					<label><input onclick="setDraggable(true)" type="radio" name="move" value="on"> ON</label>
+					<label><input onclick="setDraggable(false)" type="radio" name="move" value="off"> OFF</label>
+				</label>
+			</p>
+			<p>
+				<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('terrain')">지형</button>
+				&nbsp;
+				<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('use_district')">지적편집</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button style='width:80px; height:50px' onclick="buttonClick('RECTANGLE')">사각형</button>
+				&nbsp;
+				<button style='width:80px; height:50px' onclick="buttonClick('POLYGON')">다각형</button>
+				&nbsp;
+				<button style='width:80px; height:50px' onclick="buttonClick('MARKER')">마커</button>
+			</p>
+	
+			<p>
+				<label for="cars">Choose a car:</label>
+	
+				<select name="cars" id="cars">
+					<option value="volvo">Volvo</option>
+					<option value="saab">Saab</option>
+					<option value="mercedes">Mercedes</option>
+					<option value="audi">Audi</option>
+				</select>
+			</p>
+		</div>
+		<div class="three">
+			<h1>Three</h1>
+		</div>
+		<div class="four" id="map">
+			<h1>Four</h1>
+		</div>
+		<div class="five">
+			<input type="text" onkeyup="keyupFunction(event)" />
+			<input type="file" id="excelFile" onchange="loadExcel(event)" />
+			
+			<p><em>지도를 클릭해주세요!</em></p>
+			<div id="clickLatlng"></div>
+			<div id="clickAddress"></div>
+		</div>
+		<div class="six">
+			<h1>Six</h1>
+		</div>
 	</div>
-
-	<div class="map" id="map" style="width:100%;height:700px;">
-	</div>
-	<p><em>지도를 클릭해주세요!</em></p>
-	<div id="clickLatlng"></div>
-	<div id="clickAddress"></div>
-
-	<script>
-
-	</script>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
@@ -79,29 +144,46 @@
 
 	<script type="text/javascript" src="./js/js01.js"></script>
 	<script>
-		//37.58468807390984
-		//126.96640550469013
+		//상주 모서면
 		let lat = 36.30498817138545;
 		let lng = 127.87096679485826;
 
 		initOption.container = document.getElementById('map');
-		initOption.mapOption = {
-			center: new kakao.maps.LatLng(lat, lng),
-			level: 1
-		};
-
-		let sm = null;
-
+		initOption.mapOption.center = new kakao.maps.LatLng(lat, lng);
+		initOption.mapOption.level = 3;
 	</script>
 	<script type="text/javascript" src="./js/js02.js"></script>
 	<script type="text/javascript" src="./js/js03.js"></script>
 	<script type="text/javascript" src="./js/js04.js"></script>
 	<script type="text/javascript" src="./js/js05.js"></script>
 
-	<input type="text" onkeyup="keyupFunction(event)" />
-	<input type="file" id="excelFile" onchange="loadExcel(event)" />
-
 	<script>
+		function mapClick(mouseEvent) {
+			var latlng = mouseEvent.latLng;
+			var message = 'Lat : ' + latlng.getLat();
+			message += ', Lng : ' + latlng.getLng();
+
+			var resultDiv = document.getElementById('clickLatlng');
+			resultDiv.innerHTML = message;
+
+			centerOfAddress(latlng, function (address, coords) {
+				addMarker(address, coords);
+
+				resultDiv = document.getElementById('clickAddress');
+				resultDiv.innerHTML = address;
+			});
+		}
+		function buttonClick(type) {
+
+			kakao.maps.event.removeListener(map, 'click', mapClick);
+			if (type == 'RECTANGLE')
+				selectOverlay(type);
+			else if (type == 'POLYGON')
+				selectOverlay(type);
+			else if (type == 'MARKER')
+				kakao.maps.event.addListener(map, 'click', mapClick);
+		}
+
 		function keyupFunction(e) {
 			let state = markerStateEnum.NOT_ASSIGNED;
 			if (e.key == '1') {
@@ -233,68 +315,13 @@
 		}
 	</script>
 
-
+	
 	<script>
-		function popup() {
-			var url = "tst.html";
-			var name = "popup test";
-			var option = "width = 500, height = 500, top = 100, left = 200, location = no"
-			window.open(url, name, option);
-		}
-		function mapClick(mouseEvent) {
-			var latlng = mouseEvent.latLng;
-			var message = 'Lat : ' + latlng.getLat();
-			message += ', Lng : ' + latlng.getLng();
-
-			var resultDiv = document.getElementById('clickLatlng');
-			resultDiv.innerHTML = message;
-
-			centerOfAddress(latlng, function (address, coords) {
-				addMarker(address, coords);
-
-				resultDiv = document.getElementById('clickAddress');
-				resultDiv.innerHTML = address;
-			});
-		}
-		function buttonClick(type) {
-
-			kakao.maps.event.removeListener(map, 'click', mapClick);
-			if (type == 'RECTANGLE')
-				selectOverlay(type);
-			else if (type == 'POLYGON')
-				selectOverlay(type);
-			else if (type == 'MARKER')
-				kakao.maps.event.addListener(map, 'click', mapClick);
-		}
-
-
-		infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
-
-		////득수리0118-0004
-		//addrToCoords('경상북도 상주시 모서면 득수리 산118-4',  function(result, status) {
-		//	lat = result[0].y;
-		//	lng = result[0].x;
-		//	panTo(lat, lng);
-		//	var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-		//	addMarker(result[0].address_name, coords);
-		//	console.log("--@{");
-		//	console.log(result);
-		//	console.log("--@}");
-		//});
-
 		map.setLevel(1);
 		toggleOverlayMapTypeId('use_district');
-
-
-		// 지도에 클릭 이벤트를 등록합니다
-		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 		kakao.maps.event.addListener(map, 'click', mapClick);
 		kakao.maps.event.addListener(map, 'rightclick', function ($) { clearMarkers(); });
 	</script>
-
-	<!--
-		-->
-
 </body>
 
 </html>

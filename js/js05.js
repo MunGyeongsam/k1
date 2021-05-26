@@ -14,7 +14,7 @@ const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
     ],
     // 사용자에게 제공할 그리기 가이드 툴팁입니다
     // 사용자에게 도형을 그릴때, 드래그할때, 수정할때 가이드 툴팁을 표시하도록 설정합니다
-    guideTooltip: ['draw', 'drag', 'edit'], 
+    guideTooltip: ['draw', 'drag', 'edit'],
     markerOptions: { // 마커 옵션입니다 
         draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다 
         removable: true // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다  
@@ -23,10 +23,10 @@ const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
         draggable: true,
         removable: true,
         editable: true,
-		strokeWeight: strokeWeight,
-		strokeOpacity: 0.7,
+        strokeWeight: strokeWeight,
+        strokeOpacity: 0.7,
         strokeColor: '#39f', // 외곽선 색
-		strokeStyle: strokeStyle,
+        strokeStyle: strokeStyle,
         fillColor: '#39f', // 채우기 색
         fillOpacity: fillOpacity // 채우기색 투명도
     },
@@ -34,10 +34,10 @@ const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
         draggable: true,
         removable: true,
         editable: true,
-		strokeWeight: strokeWeight,
-		strokeOpacity: 0.7,
+        strokeWeight: strokeWeight,
+        strokeOpacity: 0.7,
         strokeColor: '#39f',
-		strokeStyle: strokeStyle,
+        strokeStyle: strokeStyle,
         fillColor: '#39f',
         fillOpacity: fillOpacity,
         hintStrokeStyle: 'shortdash',
@@ -47,27 +47,27 @@ const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 
 const manager = new kakao.maps.drawing.DrawingManager(options);
 {
-	//manager.addListener('drawstart', function(data) {
-	//	console.log('[[DrawingManager]] drawstart', data);
-	//});
-	//manager.addListener('draw', function(data) {
-	//	console.log('[[DrawingManager]] draw', data);
-	//});
-	//manager.addListener('drawend', function(data) {
-	//	console.log('[[DrawingManager]] drawend', data);
-	//});
-	//manager.addListener('drawnext', function(data) {
-	//	console.log('[[DrawingManager]] drawnext', data);
-	//});
-	//manager.addListener('cancel', function(e) {
-	//	console.log(e.overlayType);
-	//});
-	//manager.addListener('remove', function(e) {
-	//	console.log(e.overlayType);
-	//});
-	//manager.addListener('state_changed', function() {
-	//	console.log('[[DrawingManager]] state_changed');
-	//});
+    //manager.addListener('drawstart', function(data) {
+    //	console.log('[[DrawingManager]] drawstart', data);
+    //});
+    //manager.addListener('draw', function(data) {
+    //	console.log('[[DrawingManager]] draw', data);
+    //});
+    //manager.addListener('drawend', function(data) {
+    //	console.log('[[DrawingManager]] drawend', data);
+    //});
+    //manager.addListener('drawnext', function(data) {
+    //	console.log('[[DrawingManager]] drawnext', data);
+    //});
+    //manager.addListener('cancel', function(e) {
+    //	console.log(e.overlayType);
+    //});
+    //manager.addListener('remove', function(e) {
+    //	console.log(e.overlayType);
+    //});
+    //manager.addListener('state_changed', function() {
+    //	console.log('[[DrawingManager]] state_changed');
+    //});
 }
 
 //=============================================================================
