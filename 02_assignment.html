@@ -1,327 +1,459 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>HTML DIV태그</title>
-	<script>
-		const SW = window.innerWidth;
-		const SH = window.innerHeight;
-		const HW = SW / 3;
+    <head>
+        <title>Admin</title>
+        <script>
+            const SW = window.innerWidth;
+            const SH = window.innerHeight;
+            const HW = SW / 3;
             //grid-auto-rows: minmax(200px, auto);
-	</script>
-	<style type="text/css">
-		.wrapper {
-			grid-gap: 10px;
-			display: grid;
-			grid-template-columns: 400px 700px auto;
-			grid-template-rows: 100px 200px 800px auto 200px;
-		}
+        </script>
+        <style type="text/css">
+            .wrapper {
+                grid-gap: 10px;
+                display: grid;
+                grid-template-columns: 600px 700px auto;
+                grid-template-rows: 100px 200px 800px auto 200px;
+            }
 
-		.one {
-			grid-column: 1 / 4;
-			grid-row: 1;
-			color: #000000;
-			background: #4675d9cc;
-			border: 1px solid #4674D9;
-			text-align: center;
-		}
+            .one {
+                grid-column: 1 / 4;
+                grid-row: 1;
+                color: #000000;
+                background: #0373a3;
+                border: 1px solid #00a5f1;
+                text-align: center;
+            }
 
-		.two {
-			grid-column: 1 / 4;
-			grid-row: 2 / 3;
-			color: #000000;
-			background: #aeb826cc;
-			border: 1px solid #4674D9;
-			text-align: left;
-		}
+            .two {
+                grid-column: 1 / 4;
+                grid-row: 2 / 3;
+                color: #000000;
+                background: #519467;
+                border: 1px solid #4674D9;
+                text-align: left;
+            }
 
-		.three {
-			grid-column: 1 / 2;
-			grid-row: 3 / 4;
-			color: #000000;
-			background: rgba(255, 89, 90, 0.8);
-			border: 1px solid #4674D9;
-			text-align: left;
-		}
+            .three {
+                grid-column: 1 / 2;
+                grid-row: 3 / 4;
+                color: #000000;
+                background: #519467;
+                border: 1px solid #4674D9;
+                text-align: left;
+            }
 
-		.four {
-			grid-column: 2 / 4;
-			grid-row: 3;
-			color: #000000;
-			background: #b32727cc;
-			border: 1px solid #4674D9;
-			text-align: left;
-		}
+            .four {
+                grid-column: 2 / 4;
+                grid-row: 3;
+                color: #000000;
+                border: 1px solid #4674D9;
+                text-align: left;
+            }
 
-		.five {
-			grid-column: 1 / 4;
-			grid-row: 4;
-			color: #000000;
-			background: #6e6e59cc;
-			border: 1px solid #4674D9;
-			text-align: left;
-		}
+            .five {
+                grid-column: 1 / 4;
+                grid-row: 4;
+                color: #000000;
+                background: #519467;
+                border: 1px solid #4674D9;
+                text-align: left;
+            }
 
-		.six {
-			grid-column: 1 / 4;
-			grid-row: 5;
-			color: #000000;
-			background: #f3f727cc;
-			border: 1px solid #4674D9;
-			text-align: left;
-		}
-	</style>
-</head>
+            .six {
+                grid-column: 1 / 4;
+                grid-row: 5;
+                color: #000000;
+                background: #519467;
+                border: 1px solid #4674D9;
+                text-align: left;
+            }
 
-<body>
-	<div class="wrapper">
-		<div class="one">
-			<h1>One</h1>
-		</div>
-		<div class="two">
-			<p>
-				<label>Zoom
-					<label><input onclick="setZoomable(true)" type="radio" name="zoom" value="on"> ON</label>
-					<label><input onclick="setZoomable(false)" type="radio" name="zoom" value="off"> OFF</label>
-				</label>
-			</p>
-			<p>
-				<label>Move
-					<label><input onclick="setDraggable(true)" type="radio" name="move" value="on"> ON</label>
-					<label><input onclick="setDraggable(false)" type="radio" name="move" value="off"> OFF</label>
-				</label>
-			</p>
-			<p>
-				<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('terrain')">지형</button>
-				&nbsp;
-				<button style='width:80px; height:50px' onclick="toggleOverlayMapTypeId('use_district')">지적편집</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button style='width:80px; height:50px' onclick="buttonClick('RECTANGLE')">사각형</button>
-				&nbsp;
-				<button style='width:80px; height:50px' onclick="buttonClick('POLYGON')">다각형</button>
-				&nbsp;
-				<button style='width:80px; height:50px' onclick="buttonClick('MARKER')">마커</button>
-			</p>
-	
-			<p>
-				<label for="cars">Choose a car:</label>
-	
-				<select name="cars" id="cars">
-					<option value="volvo">Volvo</option>
-					<option value="saab">Saab</option>
-					<option value="mercedes">Mercedes</option>
-					<option value="audi">Audi</option>
-				</select>
-			</p>
-		</div>
-		<div class="three">
-			<h1>Three</h1>
-		</div>
-		<div class="four" id="map">
-			<h1>Four</h1>
-		</div>
-		<div class="five">
-			<input type="text" onkeyup="keyupFunction(event)" />
-			<input type="file" id="excelFile" onchange="loadExcel(event)" />
-			
-			<p><em>지도를 클릭해주세요!</em></p>
-			<div id="clickLatlng"></div>
-			<div id="clickAddress"></div>
-		</div>
-		<div class="six">
-			<h1>Six</h1>
-		</div>
-	</div>
+            .dtbl {
+                overflow: auto;
+                width: 95%;
+                height: 80%;
+                border: 1px solid #4674D9;
+                position: relative;
+                left: 10px;
+            }
 
-	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
-			//appkey == JavaScript 키
-		</script>
+            table {
+                table-layout: fixed;
+                width: 100%;
+            }
+            tr:nth-child(even) {
+                background-color: #cfc3c3cc;
+                border: 1px solid #f3f727;
+            }
+            tr:nth-child(odd) {
+                background-color: #f5b5b5cc;
+                border: 1px solid #f3f727;
+            }
+            th {
+                background-color: rgb(69, 243, 26);
+                border: 2px solid rgb(170, 44, 44);
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js">
-			//엑셀을 읽기위해 라이브러리 추가.
-	</script>
+    <body>
+        <div class="wrapper">
+            <div class="one">
+                <h1>
+                    <a title="Home" href="index.html">Home</a>
+                </h1>
+            </div>
+            <div class="two">
+                <p>
+                    <label>Zoom
+                        <label><input onclick="setZoomable(true)" type="radio" name="zoom" value="on">
+                            ON</label>
+                        <label><input onclick="setZoomable(false)" type="radio" name="zoom" value="off">
+                            OFF</label>
+                    </label>
+                </p>
+                <p>
+                    <label>Move
+                        <label><input onclick="setDraggable(true)" type="radio" name="move" value="on">
+                            ON</label>
+                        <label><input onclick="setDraggable(false)" type="radio" name="move" value="off">
+                            OFF</label>
+                    </label>
+                </p>
+                <p>
+                    <button
+                        style='width:80px; height:50px'
+                        onclick="toggleOverlayMapTypeId('terrain')">지형</button>
+                    &nbsp;
+                    <button
+                        style='width:80px; height:50px'
+                        onclick="toggleOverlayMapTypeId('use_district')">지적편집</button>
+                    1&nbsp;2&nbsp;3&nbsp;4&nbsp;&nbsp;
+                    <button style='width:80px; height:50px' onclick="buttonClick('RECTANGLE')">사각형</button>
+                    &nbsp;
+                    <button style='width:80px; height:50px' onclick="buttonClick('POLYGON')">다각형</button>
+                    &nbsp;
+                    <button style='width:80px; height:50px' onclick="buttonClick('MARKER')">마커</button>
+                </p>
 
-	<script type="text/javascript" src="./js/js01.js"></script>
-	<script>
-		//상주 모서면
-		let lat = 36.30498817138545;
-		let lng = 127.87096679485826;
+                <p>
+                    <label for="cars">Choose a car:</label>
 
-		initOption.container = document.getElementById('map');
-		initOption.mapOption.center = new kakao.maps.LatLng(lat, lng);
-		initOption.mapOption.level = 3;
-	</script>
-	<script type="text/javascript" src="./js/js02.js"></script>
-	<script type="text/javascript" src="./js/js03.js"></script>
-	<script type="text/javascript" src="./js/js04.js"></script>
-	<script type="text/javascript" src="./js/js05.js"></script>
+                    <select name="cars" id="cars">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                </p>
+            </div>
+            <div class="three">
+                <h1>Three</h1>
+                <div class="dtbl">
+                    <table id="list">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>주소</th>
+                                <th>방제사</th>
+                                <th>상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="four" id="map">
+                <h1>Four</h1>
+            </div>
+            <div class="five">
+                <input type="text" onkeyup="keyupFunction(event)"/>
+                <input type="file" id="excelFile" onchange="loadExcel(event)"/>
 
-	<script>
-		function mapClick(mouseEvent) {
-			var latlng = mouseEvent.latLng;
-			var message = 'Lat : ' + latlng.getLat();
-			message += ', Lng : ' + latlng.getLng();
+                <p>
+                    <em>지도를 클릭해주세요!</em>
+                </p>
+                <div id="clickLatlng"></div>
+                <div id="clickAddress"></div>
+            </div>
+            <div class="six">
+                <h1>Six</h1>
+            </div>
+        </div>
 
-			var resultDiv = document.getElementById('clickLatlng');
-			resultDiv.innerHTML = message;
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
+            //appkey == JavaScript 키
+        </script>
 
-			centerOfAddress(latlng, function (address, coords) {
-				addMarker(address, coords);
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js">
+            //엑셀을 읽기위해 라이브러리 추가.
+        </script>
 
-				resultDiv = document.getElementById('clickAddress');
-				resultDiv.innerHTML = address;
-			});
-		}
-		function buttonClick(type) {
+        <script type="text/javascript" src="./js/js01.js"></script>
+        <script>
+            //상주 모서면
+            let lat = 36.30498817138545;
+            let lng = 127.87096679485826;
 
-			kakao.maps.event.removeListener(map, 'click', mapClick);
-			if (type == 'RECTANGLE')
-				selectOverlay(type);
-			else if (type == 'POLYGON')
-				selectOverlay(type);
-			else if (type == 'MARKER')
-				kakao.maps.event.addListener(map, 'click', mapClick);
-		}
+            initOption.container = document.getElementById('map');
+            initOption.mapOption.center = new kakao
+                .maps
+                .LatLng(lat, lng);
+            initOption.mapOption.level = 3;
+        </script>
+        <script type="text/javascript" src="./js/js02.js"></script>
+        <script type="text/javascript" src="./js/js03.js"></script>
+        <script type="text/javascript" src="./js/js04.js"></script>
+        <script type="text/javascript" src="./js/js05.js"></script>
 
-		function keyupFunction(e) {
-			let state = markerStateEnum.NOT_ASSIGNED;
-			if (e.key == '1') {
-				state = markerStateEnum.NOT_ASSIGNED;
-			} else if (e.key == '2') {
-				state = markerStateEnum.ASSIGNED;
-			} else if (e.key == '3') {
-				state = markerStateEnum.IN_WORKING;
-			} else if (e.key == '4') {
-				state = markerStateEnum.DONE;
-			} else if (e.key == '5') {
-				state = markerStateEnum.IMPOSSIBLE;
-			} else if (e.key == 'p') {
-				popup();
-			} else if (e.key == 'a') {
-				ptInRectTest(true);
-				return;
-			} else if (e.key == 'b') {
-				ptInRectTest(false);
-				return;
-			} else {
-				console.log(manager.getData());
-				return;
-			}
+        <script>
 
-			forAllMarker(function (value, key, map) {
-				if (value.kkk.selected) {
-					value.kkk.state = state;
-					value.kkk.selected = false;
-					_updateMarker(value);
-				}
-			});
-		}
+            onAddMarker = function(marker) {
+                addRow(marker);
+            }
+            onRemMarker = function(marker) {
+                removeRow(marker);
+            }
 
-		function ptInRectTest(onoff) {
-			let data = manager.getData();
-			let rects = data.rectangle;
-			let polys = data.polygon;
+            function removeRow(marker)
+            {
+                var table = document.getElementById("list");
+                var row = table.deleteRow(marker.row.rowIndex);
+            }
+            
+            function addRow(marker)
+            {
+                var table = document.getElementById("list");
+                var row = table.insertRow(table.rows.length);
+                let cell0 = row.insertCell(0);
+                let cell1 = row.insertCell(1);
+                let cell2 = row.insertCell(2);
+                let cell3 = row.insertCell(3);
 
-			let LEN = rects.length;
-			if (LEN > 0) {
-				forAllMarker(function (value, key, map) {
-					for (let i = 0; i < LEN; ++i) {
-						let s = rects[i].sPoint;
-						let e = rects[i].ePoint;
-						if (ptInRect(value.getPosition(), s, e)) {
-							value.kkk.selected = onoff;
-							_updateMarker(value);
-						}
-					}
-				});
-			}
+                let addr = marker.getTitle();
+                let words = addr.split(' ');
+                console.log(words)
+                if (words.length > 4)
+                {
+                    addr = words[3];
+                    const LEN = words.length;
+                    for(var i=4; i<LEN; ++i)
+                    {
+                        addr += ' ' + words[i];
+                    }
+                }
 
-			LEN = polys.length;
-			if (LEN > 0) {
-				forAllMarker(function (value, key, map) {
-					for (let i = 0; i < LEN; ++i) {
-						let points = polys[i].points;
-						if (ptInPoly(value.getPosition(), points)) {
-							value.kkk.selected = onoff;
-							_updateMarker(value);
-						}
-					}
-				});
-			}
-		}
-		let selectedMarker = null;
-		rightClickMarker = function (marker) {
-			remMarker(marker.getTitle());
-		}
-		mouseOverMarker = function (marker) {
+                cell0.innerHTML = (table.rows.length+1).toString();
+                cell1.innerHTML = addr;
+                cell2.innerHTML = ".";
+                cell3.innerHTML = "미할당";
 
-			var latlng = marker.getPosition();
-			console.log(latlng);
-			var message = 'Lat : ' + latlng.getLat();
-			message += ', Lng : ' + latlng.getLng();
+                marker.row = row;
+                
 
-			var resultDiv = document.getElementById('clickLatlng');
-			resultDiv.innerHTML = message;
+                row.onclick = function(){
+                    console.log("marker", marker);
+                    console.log(marker.innerHTML);
+                    marker.kkk.selected = !marker.kkk.selected;
+                    _updateMarker(marker);
+                    clickMarker(marker);
+                    row.toggleClass("clicked");
+                }
+            }
 
-			resultDiv = document.getElementById('clickAddress');
-			resultDiv.innerHTML = marker.getTitle();
-		}
-		mouseOutMarker = function (marker) {
-		}
-		clickMarker = function (marker) {
-			sm = marker;
-			panTo(marker.getPosition());
-		}
+            function clearTable()
+            {
+                var new_tbody = document.createElement('tbody');
+                populate_with_new_rows(new_tbody);
+                old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
+            }
+            function fillTable()
+            {
+            }
+            function mapClick(mouseEvent) {
+                var latlng = mouseEvent.latLng;
+                var message = 'Lat : ' + latlng.getLat();
+                message += ', Lng : ' + latlng.getLng();
 
-		function forAllElement(rowObj) {
-			const LEN = rowObj.length;
-			rowObj.forEach(function (element) {
-				var addr0 = ('경작지' in element) ? element['경작지'] : '모서면';
-				var addr = addr0 + ' ' + element['경작지_1'];
+                var resultDiv = document.getElementById('clickLatlng');
+                resultDiv.innerHTML = message;
 
-				console.log(addr);
+                centerOfAddress(latlng, function (address, coords) {
+                    addMarker(address, coords);
 
-				addressSearch(addr, function (result, status) {
-					if (status === kakao.maps.services.Status.OK) {
-						var ret = result[0];
+                    resultDiv = document.getElementById('clickAddress');
+                    resultDiv.innerHTML = address;
+                });
+            }
+            function buttonClick(type) {
 
-						if (result.length > 1) {
-							var ret2 = result.find(e => e.address_name.indexOf('경북 상주시 모서면') >= 0);
-							if (!ret2)
-								ret2 = result.find(e => e.address_name.indexOf('경북 상주시') >= 0);
-							if (ret2)
-								ret = ret2;
-						}
+                kakao
+                    .maps
+                    .event
+                    .removeListener(map, 'click', mapClick);
+                if (type == 'RECTANGLE') 
+                    selectOverlay(type);
+                else if (type == 'POLYGON') 
+                    selectOverlay(type);
+                else if (type == 'MARKER') 
+                    kakao
+                        .maps
+                        .event
+                        .addListener(map, 'click', mapClick);
+                }
+            
+            function keyupFunction(e) {
+                let state = markerStateEnum.NOT_ASSIGNED;
+                if (e.key == '1') {
+                    state = markerStateEnum.NOT_ASSIGNED;
+                } else if (e.key == '2') {
+                    state = markerStateEnum.ASSIGNED;
+                } else if (e.key == '3') {
+                    state = markerStateEnum.IN_WORKING;
+                } else if (e.key == '4') {
+                    state = markerStateEnum.DONE;
+                } else if (e.key == '5') {
+                    state = markerStateEnum.IMPOSSIBLE;
+                } else if (e.key == 'p') {
+                    popup();
+                } else if (e.key == 'a') {
+                    ptInRectTest(true);
+                    return;
+                } else if (e.key == 'b') {
+                    ptInRectTest(false);
+                    return;
+                } else {
+                    console.log(manager.getData());
+                    return;
+                }
 
-						addMarker(ret.address_name, new kakao.maps.LatLng(ret.y, ret.x));
-						if (ret.address_name.indexOf('경북 상주시 모서면') < 0) {
-							console.log('============ :' + addr + " >> " + ret.address_name);
-							console.log(result);
-						}
-					}
-					else {
-						console.log('===>>> not fund :' + addr);
-						console.log(status);
-						console.log(result);
-					}
-				});
-			});
-		}
+                forAllMarker(function (value, key, map) {
+                    if (value.kkk.selected) {
+                        value.kkk.state = state;
+                        value.kkk.selected = false;
+                        _updateMarker(value);
+                    }
+                });
+            }
 
-		let loadExcel = function (event) {
-			console.log('loadExcel');
-			excelExport(event, forAllElement);
-		}
-	</script>
+            function ptInRectTest(onoff) {
+                let data = manager.getData();
+                let rects = data.rectangle;
+                let polys = data.polygon;
 
-	
-	<script>
-		map.setLevel(1);
-		toggleOverlayMapTypeId('use_district');
-		kakao.maps.event.addListener(map, 'click', mapClick);
-		kakao.maps.event.addListener(map, 'rightclick', function ($) { clearMarkers(); });
-	</script>
-</body>
+                let LEN = rects.length;
+                if (LEN > 0) {
+                    forAllMarker(function (value, key, map) {
+                        for (let i = 0; i < LEN; ++i) {
+                            let s = rects[i].sPoint;
+                            let e = rects[i].ePoint;
+                            if (ptInRect(value.getPosition(), s, e)) {
+                                value.kkk.selected = onoff;
+                                _updateMarker(value);
+                            }
+                        }
+                    });
+                }
+
+                LEN = polys.length;
+                if (LEN > 0) {
+                    forAllMarker(function (value, key, map) {
+                        for (let i = 0; i < LEN; ++i) {
+                            let points = polys[i].points;
+                            if (ptInPoly(value.getPosition(), points)) {
+                                value.kkk.selected = onoff;
+                                _updateMarker(value);
+                            }
+                        }
+                    });
+                }
+            }
+            let selectedMarker = null;
+            rightClickMarker = function (marker) {
+                remMarker(marker.getTitle());
+            }
+            mouseOverMarker = function (marker) {
+
+                var latlng = marker.getPosition();
+                console.log(latlng);
+                var message = 'Lat : ' + latlng.getLat();
+                message += ', Lng : ' + latlng.getLng();
+
+                var resultDiv = document.getElementById('clickLatlng');
+                resultDiv.innerHTML = message;
+
+                resultDiv = document.getElementById('clickAddress');
+                resultDiv.innerHTML = marker.getTitle();
+            }
+            mouseOutMarker = function (marker) {}
+            clickMarker = function (marker) {
+                panTo(marker.getPosition());
+            }
+
+            function forAllElement(rowObj) {
+                const LEN = rowObj.length;
+                
+                rowObj.forEach(function (element) {
+                    var addr0 = ('경작지' in element)
+                        ? element['경작지']
+                        : '모서면';
+                    var addr = addr0 + ' ' + element['경작지_1'];
+
+                    console.log(addr);
+
+                    addressSearch(addr, function (result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            var ret = result[0];
+
+                            if (result.length > 1) {
+                                var ret2 = result.find(e => e.address_name.indexOf('경북 상주시 모서면') >= 0);
+                                if (!ret2) 
+                                    ret2 = result.find(e => e.address_name.indexOf('경북 상주시') >= 0);
+                                if (ret2) 
+                                    ret = ret2;
+                                }
+                            
+                            addMarker(ret.address_name, new kakao.maps.LatLng(ret.y, ret.x));
+                            if (ret.address_name.indexOf('경북 상주시 모서면') < 0) {
+                                console.log('============ :' + addr + " >> " + ret.address_name);
+                                console.log(result);
+                            }
+                        } else {
+                            console.log('===>>> not fund :' + addr);
+                            console.log(status);
+                            console.log(result);
+                        }
+                    });
+                });
+            }
+
+            let loadExcel = function (event) {
+                console.log('loadExcel');
+                excelExport(event, forAllElement);
+            }
+        </script>
+
+        <script>
+            map.setLevel(1);
+            toggleOverlayMapTypeId('use_district');
+            kakao
+                .maps
+                .event
+                .addListener(map, 'click', mapClick);
+            kakao
+                .maps
+                .event
+                .addListener(map, 'rightclick', function ($) {
+                    clearMarkers();
+                });
+        </script>
+    </body>
 
 </html>

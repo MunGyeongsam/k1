@@ -3,6 +3,14 @@
 //=============================================================================
 const markers = new Map();
 
+// custumize in each html
+let onAddMarker = function(marker) {}
+let onRemMarker = function(marker) {}
+let mouseOverMarker = function (marker) { };
+let mouseOutMarker = function (marker) { };
+let clickMarker = function (marker) { };
+let rightClickMarker = function (marker) { };
+
 const markerStateEnum = {
     NOT_ASSIGNED: 0,
     ASSIGNED: 1,
@@ -55,11 +63,6 @@ const clusterer = new kakao.maps.MarkerClusterer({
     minLevel: 8             // 클러스터 할 최소 지도 레벨 
 });
 
-// custumize in each html
-let mouseOverMarker = function (marker) { };
-let mouseOutMarker = function (marker) { };
-let clickMarker = function (marker) { };
-let rightClickMarker = function (marker) { };
 
 
 const _updateMarker = function (marker) {
@@ -71,7 +74,7 @@ const _updateMarker = function (marker) {
         //marker.kkk.infowindow.setZIndex(2);
     } else if (marker.kkk.selected) {
         marker.setZIndex(1);
-        marker.setOpacity(0.7);
+        marker.setOpacity(0.9);
         //marker.kkk.infowindow.setZIndex(1);
     } else {
         marker.setZIndex(0);
@@ -110,41 +113,50 @@ function changeMarkerState(marker, state) {
 }
 
 function addMarker(address, coord, addtional = {}) {
-    remMarker(address);
+    let marker = markers.get(address);
+    if (marker)
+    {
+        marker.setMap(null);
+        marker.setMap(map);
+    }
+    else
+    {
+        marker = new kakao.maps.Marker({
+            map: map,
+            title: address,
+            image: imgs.normal[0],
+            text:'홍길동',
+            position: coord
+        });
 
-    var marker = new kakao.maps.Marker({
-        map: map,
-        title: address,
-        image: imgs.normal[0],
-        border: 5,
-        position: coord
-    });
+        //var infowindow = new kakao.maps.InfoWindow({
+        //    map: map,
+        //    position: new kakao.maps.LatLng(coord.getLat()+0.00004, coord.getLng()),
+        //    content: '홍길동'
+        //});
+        clusterer.addMarker(marker);
+        markers.set(address, marker);
 
-    //var infowindow = new kakao.maps.InfoWindow({
-    //    map: map,
-    //    position: new kakao.maps.LatLng(coord.getLat()+0.00004, coord.getLng()),
-    //    content: '홍길동'
-    //});
-    clusterer.addMarker(marker);
-    markers.set(address, marker);
+        marker.addtional = addtional;
+        marker.kkk = {
+            //infowindow:infowindow,
+            state: markerStateEnum.NOT_ASSIGNED,
+            selected: false,
+            mouseover: false
+        };
 
-    marker.addtional = addtional;
-    marker.kkk = {
-        //infowindow:infowindow,
-        state: markerStateEnum.NOT_ASSIGNED,
-        selected: false,
-        mouseover: false
-    };
+        marker.mouseOver = function (event) { _handlerMouseOver(marker); };
+        marker.mouseOut = function (event) { _handlerMouseOut(marker); };
+        marker.click = function (event) { _handlerMouseClick(marker); };
+        marker.rightClick = function (event) { _handlerMouseRightClick(marker); };
 
-    marker.mouseOver = function (event) { _handlerMouseOver(marker); };
-    marker.mouseOut = function (event) { _handlerMouseOut(marker); };
-    marker.click = function (event) { _handlerMouseClick(marker); };
-    marker.rightClick = function (event) { _handlerMouseRightClick(marker); };
+        kakao.maps.event.addListener(marker, 'mouseover', marker.mouseOver);
+        kakao.maps.event.addListener(marker, 'mouseout', marker.mouseOut);
+        kakao.maps.event.addListener(marker, 'click', marker.click);
+        kakao.maps.event.addListener(marker, 'rightclick', marker.rightClick);
 
-    kakao.maps.event.addListener(marker, 'mouseover', marker.mouseOver);
-    kakao.maps.event.addListener(marker, 'mouseout', marker.mouseOut);
-    kakao.maps.event.addListener(marker, 'click', marker.click);
-    kakao.maps.event.addListener(marker, 'rightclick', marker.rightClick);
+        onAddMarker(marker);
+    }
 }
 
 function resetMarker(marker) {
@@ -171,10 +183,11 @@ function remMarker(address) {
     if (marker) {
         resetMarker(marker);
         markers.delete(address);
+        onRemMarker(marker);
     }
 }
 
 function clearMarkers() {
-    markers.forEach((v, $, _) => { resetMarker(v); });
+    markers.forEach((v, $, _) => { onRemMarker(v); resetMarker(v); });
     markers.clear();
 }
