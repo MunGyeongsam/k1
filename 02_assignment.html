@@ -214,7 +214,7 @@
         <script type="text/javascript" src="./js/js05.js"></script>
 
         <script>
-
+            let id = 1;
             onAddMarker = function(marker) {
                 addRow(marker);
             }
@@ -250,7 +250,10 @@
                     }
                 }
 
-                cell0.innerHTML = (table.rows.length+1).toString();
+                if (id == 1)
+                    panTo(marker.getPosition());
+
+                cell0.innerHTML = (id++).toString();
                 cell1.innerHTML = addr;
                 cell2.innerHTML = ".";
                 cell3.innerHTML = "미할당";

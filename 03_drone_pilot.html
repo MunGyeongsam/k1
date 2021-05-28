@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>HTML DIV태그</title>
+	<title>Drone Pilot</title>
 	<script>
 		const SW = window.innerWidth;
 		const SH = window.innerHeight;
@@ -10,17 +10,18 @@
         //grid-auto-rows: minmax(200px, auto);
 		//https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout
 
+
 	</script>
 	<style type="text/css">
 		.wrapper {
 			grid-gap: 10px;
 			display: grid;
-			grid-template-columns: 400px 700px auto;
-			grid-template-rows: 100px 200px 800px auto 200px;
+			grid-template-columns: 10% 90%;
+			grid-template-rows: 15% 40% 370% 300%;
 		}
 
 		.one {
-			grid-column: 1 / 4;
+			grid-column: 1 / 3;
 			grid-row: 1;
 			color: #000000;
 			background: #4675d9cc;
@@ -29,7 +30,7 @@
 		}
 
 		.two {
-			grid-column: 1 / 4;
+			grid-column: 1 / 3;
 			grid-row: 2 / 3;
 			color: #000000;
 			background: #aeb826cc;
@@ -47,8 +48,8 @@
 		}
 
 		.four {
-			grid-column: 2 / 4;
-			grid-row: 3;
+			grid-column: 2 / 3;
+			grid-row: 3 / 4;
 			color: #000000;
 			background: #b32727cc;
 			border: 1px solid #4674D9;
@@ -56,7 +57,7 @@
 		}
 
 		.five {
-			grid-column: 1 / 4;
+			grid-column: 1 / 3;
 			grid-row: 4;
 			color: #000000;
 			background: #6e6e59cc;
@@ -65,10 +66,10 @@
 		}
 
 		.six {
-			grid-column: 1 / 4;
-			grid-row: 5;
+			grid-column: 1 / 2;
+			grid-row: 4;
 			color: #000000;
-			background: #f3f727cc;
+			background: #6e6e59cc;
 			border: 1px solid #4674D9;
 			text-align: center;
 		}
@@ -88,14 +89,52 @@
 		</div>
 		<div class="four" id="map">
 			<h1>Four</h1>
+			<div class="dtbl">
+				<table id="list">
+					<thead>
+						<tr>
+							<th>id</th>
+							<th>주소</th>
+							<th>방제사</th>
+							<th>상태</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<div class="five">
-			six
-		</div>
-		<div class="six">
-			<h1>Six</h1>
+			<h1>Five</h1>
 		</div>
 	</div>
+
+
+
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
+	//appkey == JavaScript 키
+		</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js">
+	//엑셀을 읽기위해 라이브러리 추가.
+	</script>
+
+	<script type="text/javascript" src="./js/js01.js"></script>
+	<script>
+		//상주 모서면
+		let lat = 36.30498817138545;
+		let lng = 127.87096679485826;
+
+		initOption.container = document.getElementById('map');
+		initOption.mapOption.center = new kakao
+			.maps
+			.LatLng(lat, lng);
+		initOption.mapOption.level = 3;
+	</script>
+	<script type="text/javascript" src="./js/js02.js"></script>
+	<script type="text/javascript" src="./js/js03.js"></script>
+	<script type="text/javascript" src="./js/js04.js"></script>
 </body>
 
 </html>
