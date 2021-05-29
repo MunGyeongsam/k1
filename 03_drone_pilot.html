@@ -163,11 +163,10 @@
 
 
 	
-	<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 	<script type="text/javascript" src="./js/kakao.js"></script>
 
 	<script>
-		//kakao.init('d3570968e771fd13fd7907f546f19c06');
+		kakao.init('d3570968e771fd13fd7907f546f19c06');
 		function navi(){
 			Kakao.Navi.start({
 				name: "현대백화점 판교점",
@@ -180,7 +179,8 @@
 
 	<script>
 		function tell(num) {
-			location.href = "tell:07088214840";
+			//location.href = "tell:"+num;
+			window.open('tel:07088214840');
 		}
 	</script>
 </body>
