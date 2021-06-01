@@ -82,6 +82,12 @@ const _updateMarker = function (marker) {
     }
 }
 
+function selectMarker(marker, val)
+{
+    marker.kkk.selected = val;
+    _updateMarker(marker);
+}
+
 const _handlerMouseOver = function (marker) {
     marker.kkk.mouseover = true;
 
@@ -112,7 +118,60 @@ function changeMarkerState(marker, state) {
     marker.kkk.state = state;
 }
 
-function addMarker(address, coord, addtional = {}) {
+function _findBestResult(result, addr0)
+{
+    let ret = result[0];
+
+    if(result.length > 1)
+    {
+        let str0 = '경북 상주시 '+ addr0;
+        let str1 = '경북 상주시';
+        let ret2 = result.find(
+            e => e.address_name.indexOf(str0) >= 0);
+        if (!ret2)
+            ret2 = result.find(
+                e => e.address_name.indexOf(str1) >= 0);
+        if (ret2) {
+            ret = ret2;
+        } else {
+            console.log('============ :', result);
+        }
+    }
+
+    return ret;
+}
+
+function addMarkers(lands) {
+    let LEN = lands.length;
+    let addr0, addr1, addr;
+
+    for(let i=0; i<LEN; ++i)
+    {
+        let land = lands[i];
+        addr0 = land.hasOwnProperty('경작지') ? land['경작지'] : '모서면';
+        addr1 = land['경작지_1'];
+
+        addr = addr0 + ' ' + addr1;
+
+        addressSearch(addr, function (result, status) {
+
+            if (status === kakao.maps.services.Status.OK) {
+
+                var ret = _findBestResult(result, addr0);
+                addMarker(ret.address_name, new kakao.maps.LatLng(ret.y, ret.x), {land:land});
+                if (i==0){
+                    panTo(new kakao.maps.LatLng(ret.y, ret.x));
+                }
+
+            } else {
+                console.warn('===>>> not fund :' + addr);
+                console.log(status);
+            }
+        });
+    }
+}
+
+function addMarker(address, coord, additional = {}) {
     let marker = markers.get(address);
     if (marker)
     {
@@ -137,7 +196,7 @@ function addMarker(address, coord, addtional = {}) {
         clusterer.addMarker(marker);
         markers.set(address, marker);
 
-        marker.addtional = addtional;
+        marker.additional = additional;
         marker.kkk = {
             //infowindow:infowindow,
             state: markerStateEnum.NOT_ASSIGNED,
@@ -167,7 +226,7 @@ function resetMarker(marker) {
     kakao.maps.event.removeListener(marker, 'click', marker.click);
     kakao.maps.event.removeListener(marker, 'rightclick', marker.rightClick);
 
-    delete marker.addtional;
+    delete marker.additional;
     delete marker.kkk;
     delete marker.mouseOver;
     delete marker.mouseOut;

@@ -13,27 +13,63 @@ let initOption = {
     }
 }
 
+let lands;
+let owners = new Map();
+
+
+// =============================================================================
+// for xlxs
+// =============================================================================
 //http://www.gisdeveloper.co.kr/?p=8987 https://eblo.tistory.com/83
-
-function excelExport(event, callback) {
-    console.group("excelExport");
-    var input = event.target;
-    var reader = new FileReader();
-
-    reader.onload = function () {
-        var fileData = reader.result;
-        var wb = XLSX.read(fileData, {type: 'binary'});
-        var rowObj = XLSX
-            .utils
-            .sheet_to_json(wb.Sheets['경작지']);
-
-        console.group("before callback");
-        callback(rowObj);
-    };
-
-    reader.readAsBinaryString(input.files[0]);
+function findPhoneNumber(name)
+{
+    //console.log('find :', name, owners[name]);
+    return owners.hasOwnProperty(name) ? owners[name]['전화번호'] : 0;
 }
 
+function onLoadXlxs(sheets, callback)
+{
+    //console.log(sheets);
+    lands = XLSX.utils.sheet_to_json(sheets['경작지']);
+    let arrOwners = XLSX.utils.sheet_to_json(sheets['농업인']);
+
+    //console.log(lands);
+    //console.log(arrOwners);
+
+    arrOwners.forEach(function(owner){
+        let key = owner['성명'];
+        if (owners.hasOwnProperty(key))
+        {
+            console.warn("이름 충돌:", key);
+        }
+        else
+        {
+            owners[key] = owner;
+        }
+    });
+
+    callback(lands);
+}
+
+function excelExport(fname, callback) {
+    
+    let reader = new FileReader();
+
+    reader.onload = function () {
+        let fileData = reader.result;
+        let workBook = XLSX.read(fileData, {type: 'binary'});
+
+        //console.log("wb : ", workBook);
+        let sheets = workBook.Sheets;
+        onLoadXlxs(sheets, callback);
+    };
+
+    reader.readAsBinaryString(fname);
+}
+
+// =============================================================================
+// to select markers
+// =============================================================================
 function ptInRect(latLng, sPoint, ePoint) {
     let x = latLng.getLng();
     let y = latLng.getLat();

@@ -10,94 +10,7 @@
             // grid-auto-rows: minmax(200px, auto);
             // https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout
 	</script>
-	<style type="text/css">
-		.wrapper {
-			grid-gap: 10px;
-			display: grid;
-			grid-template-columns: 10% 80% auto;
-			grid-template-rows: 15% 40% 350% auto;
-		}
-
-		.one {
-			grid-column: 1 / 4;
-			grid-row: 1;
-			color: #000000;
-			background: #4675d9cc;
-			border: 1px solid #4674D9;
-			text-align: center;
-		}
-
-		.two {
-			grid-column: 1 / 4;
-			grid-row: 2 / 3;
-			color: #000000;
-			background: #aeb826cc;
-			border: 1px solid #4674D9;
-			text-align: center;
-		}
-
-		.three {
-			grid-column: 1 / 2;
-			grid-row: 3 / 4;
-			color: #000000;
-			background: rgba(255, 89, 90, 0.8);
-			border: 1px solid #4674D9;
-			text-align: center;
-		}
-
-		.four {
-			grid-column: 2 / 4;
-			grid-row: 3 / 4;
-			color: #000000;
-			background: #b32727cc;
-			border: 1px solid #4674D9;
-			text-align: center;
-		}
-
-		.five {
-			grid-column: 1 / 4;
-			grid-row: 4;
-			color: #000000;
-			background: #6e6e59cc;
-			border: 1px solid #4674D9;
-			text-align: left;
-		}
-
-		.styled {
-			border: 0;
-			line-height: 2.5;
-			padding: 0 20px;
-			font-size: 4rem;
-			text-align: center;
-			color: #fff;
-			text-shadow: 1px 1px 1px #000;
-			border-radius: 10px;
-			background-color: rgba(220, 0, 0, 1);
-			background-image: linear-gradient(to top left,
-					rgba(0, 0, 0, .2),
-					rgba(0, 0, 0, .2) 30%,
-					rgba(0, 0, 0, 0));
-			box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
-				inset -2px -2px 3px rgba(0, 0, 0, .6);
-		}
-
-		.styled:hover {
-			background-color: rgba(255, 0, 0, 1);
-		}
-
-		.styled:active {
-			box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
-				inset 2px 2px 3px rgba(0, 0, 0, .6);
-		}
-		.input-file-button{
-			padding: 6px 25px;
-			background-color:#FF6600;
-			border-radius: 4px;
-			color: white;
-			cursor: pointer;
-			font-size: 4rem;
-		}
-	</style>
+	<link REL="stylesheet" href="./css/03_drone_pilot.css">
 </head>
 
 <body>
@@ -108,8 +21,19 @@
 			</h1>
 		</div>
 		<div class="two">
-			<h1>Two</h1>
-			<h1><a href="javascript:void(0);" onclick="navi();">카카오네비 3</a></h1>
+			<input class="styled" type="button" value="Tell" onclick="tell('070-8821-4840')">
+			&nbsp;
+			<input class="styled" type="button" value="Path" onclick="navi()">
+			&nbsp;
+			<p>
+			<div class="input-file-button" id="marker_numb">aaa</div>
+			<div class="input-file-button" id="marker_addr">aaa</div>
+			</p>
+			
+			<p><input class="input-file-button" type="file" title="이미지" accept="image/*,video/*;capture=camera" value="Gallery"></p>
+			<p><input class="input-file-button" type="file" title="엑셀" accept=".xlsx" onchange="loadExcel(event)" /></p>
+
+			
 		</div>
 		<div class="three">
 			<h1>Three</h1>
@@ -131,18 +55,13 @@
 			</div>
 		</div>
 		<div class="five">
-			<input class="styled" type="button" value="Tell" onclick="tell('070-8821-4840')">
-			&nbsp;
-			<input class="styled" type="button" value="Path" onclick="navi()">
-			&nbsp;
-			<input class="input-file-button" type="file" accept="image/*;capture=camera" value="Gallery">
 		</div>
 	</div>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
             //appkey == JavaScript 키
-		</script>
+	</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js">
             //엑셀을 읽기위해 라이브러리 추가.
@@ -164,31 +83,18 @@
 	<script type="text/javascript" src="./js/js03.js"></script>
 	<script type="text/javascript" src="./js/js04.js"></script>
 
+	<script type="text/javascript" src="./js/03_drone_pilot.js"></script>
+
 
 	<script>
-		console.log("Kakao.init 1");
 		Kakao.init('d3570968e771fd13fd7907f546f19c06');
-		console.log("Kakao.init 2");
-		Kakao.isInitialized();
-		console.log("Kakao.init 3");
-
-		function navi(){
-			console.log("Kakao.init navi");
-
-			Kakao.Navi.start({
-				name: "현대백화점 판교점",
-				x: 127.11205203011632,
-				y: 37.39279717586919,
-				coordType: 'wgs84'
-			});
-		}
+		console.log("Kakao.isInitialized : ", Kakao.isInitialized());
 	</script>
 
 	<script>
-		function tell(num) {
-			//location.href = "tell:"+num;
-			window.open('tel:07088214840');
-		}
+		map.setMaxLevel(5);
+		map.setLevel(1);
+		toggleOverlayMapTypeId('use_district');
 	</script>
 </body>
 
