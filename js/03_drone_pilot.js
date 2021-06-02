@@ -45,7 +45,7 @@ function chageStateSelect() {
 		state = markerStateEnum.ASSIGNED;
 	} else if (selectValue == 'IN_WORKING') {
 		state = markerStateEnum.IN_WORKING;
-	} else if (selectValue == 'IN_WODONERKING') {
+	} else if (selectValue == 'DONE') {
 		state = markerStateEnum.DONE;
 	} else if (selectValue == 'IMPOSSIBLE') {
 		state = markerStateEnum.IMPOSSIBLE;
