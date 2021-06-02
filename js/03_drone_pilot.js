@@ -57,16 +57,36 @@ function chageStateSelect() {
 	}
 }
 
+function updateSelectIndex(marker)
+{
+	var combo = document.getElementById("id-state");
+	var state = marker.kkk.state;
+
+	if (state == markerStateEnum.NOT_ASSIGNED) {
+		combo.selectedIndex = 0;
+	} else if (state == markerStateEnum.ASSIGNED) {
+		combo.selectedIndex = 1;
+	} else if (state == markerStateEnum.IN_WORKING) {
+		combo.selectedIndex = 2;
+	} else if (state == markerStateEnum.DONE) {
+		combo.selectedIndex = 3;
+	} else if (state == markerStateEnum.IMPOSSIBLE) {
+		combo.selectedIndex = 4;
+	}
+}
+
 clickMarker = function (marker) {
+
 	if (selectedMarker && marker !== selectedMarker) {
 		selectMarker(selectedMarker, false);
+	} else {
+		var combo = document.getElementById("id-state");
+		combo.disabled = false;
 	}
 
 	selectedMarker = marker;
+	updateSelectIndex(selectedMarker);
 	panTo(marker.getPosition());
-
-	var combo = document.getElementById("id-state");
-	combo.disabled = false;
 
 	var name = marker.additional.land['성명'];
 
