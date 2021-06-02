@@ -21,47 +21,76 @@
 			</h1>
 		</div>
 		<div class="two">
-			<input class="styled" type="button" value="Tell" onclick="tell('070-8821-4840')">
+			<input class="styled" type="button" value="Tell" onclick="tell()" disabled>
 			&nbsp;
 			<input class="styled" type="button" value="Path" onclick="navi()">
 			&nbsp;
-			<p>
-			<div class="input-file-button" id="marker_numb">aaa</div>
-			<div class="input-file-button" id="marker_addr">aaa</div>
-			</p>
-			
-			<p><input class="input-file-button" type="file" title="이미지" accept="image/*,video/*" capture="camera,camcorder" name="environment" value="Gallery"></p>
-			<p><input class="input-file-button" type="file" title="엑셀" onchange="loadExcel(event)" /></p>
+			<span class="input-file-button">
+				<label for="state">State:</label>
+				<select class="input-file-button" name="state" id="id-state" disabled onchange="chageStateSelect()">
+					<option value="NOT_ASSIGNED">미할당</option>
+					<option value="ASSIGNED">할당</option>
+					<option value="IN_WORKING">작업시작</option>
+					<option value="DONE">완료</option>
+					<option value="IMPOSSIBLE">작업불가</option>
+				</select>
+			</span>
 
-			
+			<p>
+			<div class="input-file-button" id="marker_numb">...</div>
+			<div class="input-file-button" id="marker_addr">...</div>
+			</p>
+
+			<p><input class="input-file-button" type="file" title="이미지" accept="image/*,video/*"
+					capture="camera,camcorder" name="environment" value="Gallery"></p>
+			<p><input class="input-file-button" type="file" title="엑셀"
+					accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+					onchange="loadExcel(event)" /></p>
+
+
 		</div>
 		<div class="three">
 			<h1>Three</h1>
 		</div>
 		<div class="four" id="map">
 			<h1>Four</h1>
+		</div>
+		<div class="five">
 			<div class="dtbl">
 				<table id="list">
 					<thead>
 						<tr>
 							<th>id</th>
 							<th>주소</th>
-							<th>방제사</th>
 							<th>상태</th>
 						</tr>
 					</thead>
-					<tbody></tbody>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>aaaaaa</td>
+							<td>bbb</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>aaaaaa</td>
+							<td>bbb</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>aaaaaa</td>
+							<td>bbb</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
-		</div>
-		<div class="five">
 		</div>
 	</div>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3570968e771fd13fd7907f546f19c06&libraries=services,clusterer,drawing">
             //appkey == JavaScript 키
-	</script>
+		</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js">
             //엑셀을 읽기위해 라이브러리 추가.
@@ -92,7 +121,7 @@
 	</script>
 
 	<script>
-		map.setMaxLevel(5);
+		map.setMaxLevel(7);
 		map.setLevel(1);
 		toggleOverlayMapTypeId('use_district');
 	</script>

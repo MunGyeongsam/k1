@@ -3,7 +3,7 @@
 	grid-gap: 10px;
 	display: grid;
 	grid-template-columns: 10% 90% auto;
-	grid-template-rows: 15% 75% 200% auto auto;
+	grid-template-rows: 15% 52% 200% auto auto;
 }
 
 .one {
@@ -79,5 +79,36 @@
 	border-radius: 4px;
 	color: white;
 	cursor: pointer;
+	font-size: 4rem;
+}
+
+
+
+table {
+	table-layout: fixed;
+	width: 100%;
+	border: 2px solid #30302b;
+	border-collapse: collapse;
+	font-size: 4rem;
+}
+
+tr:nth-child(even) {
+	background-color: #cfc3c3cc;
+	border: 1px solid #020202;
+	font-size: 4rem;
+}
+
+tr:nth-child(odd) {
+	background-color: #f5b5b5cc;
+	border: 1px solid #020202;
+	font-size: 4rem;
+}
+
+th {
+	background-color: rgb(43, 106, 179);
+	border: 1px solid #020202;
+	border-collapse: collapse;
+	position: sticky;
+	top: 0;
 	font-size: 4rem;
 }
