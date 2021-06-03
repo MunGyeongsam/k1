@@ -33,12 +33,13 @@ imgs.get = function (marker) {
 }
 {
     //private
-    let sizeN = new kakao.maps.Size(60, 60);
-    let sizeO = new kakao.maps.Size(72, 72);
-    let nrm = imgs.normal;
-    let ovr = imgs.over;
-    let sel = imgs.selected;
-    let sov = imgs.selectedOvr;
+    const offset = 40;
+    const sizeN = new kakao.maps.Size(60+offset, 60+offset);
+    const sizeO = new kakao.maps.Size(72+offset, 72+offset);
+    const nrm = imgs.normal;
+    const ovr = imgs.over;
+    const sel = imgs.selected;
+    const sov = imgs.selectedOvr;
 
     //let path = 'https://raw.githubusercontent.com/MunGyeongsam/k1/main';
     //let path = 'https://github.com/MunGyeongsam/k1/blob/main';
@@ -60,7 +61,8 @@ imgs.get = function (marker) {
 const clusterer = new kakao.maps.MarkerClusterer({
     map: map,               // 마커들을 클러스터로 관리하고 표시할 지도 객체 
     averageCenter: true,    // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-    minLevel: 8             // 클러스터 할 최소 지도 레벨 
+    //disableClickZoom: true,
+    minLevel: 6             // 클러스터 할 최소 지도 레벨 
 });
 
 
