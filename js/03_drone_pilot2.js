@@ -85,6 +85,9 @@ clickMarker = function (marker) {
 		combo.disabled = false;
 	}
 
+	//토글 방지
+	marker.kkk.selected = true;
+
 	selectedMarker = marker;
 	updateSelectIndex(selectedMarker);
 	panTo(marker.getPosition());
@@ -100,6 +103,7 @@ clickMarker = function (marker) {
 	resultDiv = document.getElementById('marker_addr');
 	resultDiv.innerHTML = selectedAddr;
 
+	selectRow(marker.row);
 	//console.log(marker.getPosition());
 }
 
@@ -135,6 +139,18 @@ function updateTable(marker) {
 	marker.row.cells[2].innerHTML = value;
 }
 
+let selectedRow;
+function selectRow(row)
+{
+	if (selectedRow)
+	{
+		selectedRow.style.backgroundColor = selectedRow.orgColor;
+	}
+	selectedRow = row;
+
+	row.orgColor = row.style.backgroundColor;
+	row.style.backgroundColor = '#BCD4EC';
+}
 function addRow(marker) {
 	var table = document.getElementById("list");
 	var row = table.insertRow(table.rows.length);
@@ -163,11 +179,15 @@ function addRow(marker) {
 	marker.row = row;
 
 	row.onclick = function () {
-		console.log("marker", marker);
-		console.log(marker.innerHTML);
-		marker.kkk.selected = !marker.kkk.selected;
+		//console.log("marker", marker);
+		//console.log(row.innerHTML);
+		if (marker.kkk.selected)
+			return;
+
+		marker.kkk.selected = true;
 		_updateMarker(marker);
 		clickMarker(marker);
+		selectRow(this);
 	}
 }
 //*/
