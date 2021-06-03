@@ -54,6 +54,7 @@ function chageStateSelect() {
 	if (selectedMarker) {
 		selectedMarker.kkk.state = state;
 		_updateMarker(selectedMarker);
+		updateTable(selectedMarker);
 	}
 }
 
@@ -114,6 +115,24 @@ onRemMarker = function (marker) {
 function removeRow(marker) {
 	var table = document.getElementById("list");
 	var row = table.deleteRow(marker.row.rowIndex);
+}
+
+function updateTable(marker) {
+	let state = marker.kkk.state;
+	let value = "...";
+	if (state == markerStateEnum.NOT_ASSIGNED) {
+		value = "미할당";
+	} else if (state == markerStateEnum.ASSIGNED) {
+		value = "할당";
+	} else if (state == markerStateEnum.IN_WORKING) {
+		value = "작업시작";
+	} else if (state == markerStateEnum.DONE) {
+		value = "완료";
+	} else if (state == markerStateEnum.IMPOSSIBLE) {
+		value = "작업불가";
+	}
+
+	marker.row.cells[2].innerHTML = value;
 }
 
 function addRow(marker) {
