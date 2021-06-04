@@ -58,8 +58,7 @@ function chageStateSelect() {
 	}
 }
 
-function updateSelectIndex(marker)
-{
+function updateSelectIndex(marker) {
 	var combo = document.getElementById("id-state");
 	var state = marker.kkk.state;
 
@@ -76,17 +75,13 @@ function updateSelectIndex(marker)
 	}
 }
 
-clickMarker = function (marker) {
-
+function setSelectMarker(marker) {
 	if (selectedMarker && marker !== selectedMarker) {
 		selectMarker(selectedMarker, false);
 	} else {
 		var combo = document.getElementById("id-state");
 		combo.disabled = false;
 	}
-
-	//토글 방지
-	marker.kkk.selected = true;
 
 	selectedMarker = marker;
 	updateSelectIndex(selectedMarker);
@@ -102,9 +97,15 @@ clickMarker = function (marker) {
 
 	resultDiv = document.getElementById('marker_addr');
 	resultDiv.innerHTML = selectedAddr;
+}
 
+clickMarker = function (marker) {
+	//토글 방지
+	marker.kkk.selected = true;
+
+	setSelectMarker(marker);
 	selectRow(marker.row);
-	//console.log(marker.getPosition());
+	updateScroll(marker.row);
 }
 
 //*
@@ -139,11 +140,14 @@ function updateTable(marker) {
 	marker.row.cells[2].innerHTML = value;
 }
 
+function updateScroll(row) {
+	var dtbl = document.getElementById("dtbl");
+	dtbl.scrollTop = row.offsetTop;
+}
+
 let selectedRow;
-function selectRow(row)
-{
-	if (selectedRow)
-	{
+function selectRow(row) {
+	if (selectedRow) {
 		selectedRow.style.backgroundColor = selectedRow.orgColor;
 	}
 	selectedRow = row;
@@ -151,6 +155,7 @@ function selectRow(row)
 	row.orgColor = row.style.backgroundColor;
 	row.style.backgroundColor = '#BCD4EC';
 }
+
 function addRow(marker) {
 	var table = document.getElementById("list");
 	var row = table.insertRow(table.rows.length);
@@ -186,7 +191,7 @@ function addRow(marker) {
 
 		marker.kkk.selected = true;
 		_updateMarker(marker);
-		clickMarker(marker);
+		setSelectMarker(marker);
 		selectRow(this);
 	}
 }
