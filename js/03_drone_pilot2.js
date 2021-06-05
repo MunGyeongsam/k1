@@ -163,6 +163,13 @@ function addRow(marker) {
 	let cell1 = row.insertCell(1);
 	let cell2 = row.insertCell(2);
 
+	//let a = marker.a.innerHTML;
+	//marker.a.innerHTML = a + "<span class='centered' onclick='return false;'>kday</span>";
+
+	//let a = marker.a.innerHTML;
+	//marker.a.innerHTML = a;
+
+
 	let addr = marker.getTitle();
 	let words = addr.split(' ');
 

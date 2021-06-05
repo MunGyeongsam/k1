@@ -1,122 +1,130 @@
 
 .wrapper {
-	grid-gap: 10px;
-	display: grid;
-	grid-template-columns: 10vw 90vw 100vw;
-	grid-template-rows: 5vh 20vh 75vh 100vh auto;
+    grid-gap: 10px;
+    display: grid;
+    grid-template-columns: 10vw 90vw 100vw;
+    grid-template-rows: 5vh 20vh 75vh 100vh auto;
 }
 
 .one {
-	grid-column: 1 / 3;
-	grid-row: 1;
-	color: #000000;
-	background: #4675d9cc;
-	border: 1px solid #4674D9;
-	text-align: center;
+    grid-column: 1 / 3;
+    grid-row: 1;
+    color: #000000;
+    background: #4675d9cc;
+    border: 1px solid #4674D9;
+    text-align: center;
 }
 
 .two {
-	/**/
-	grid-column: 1 / 3;
-	grid-row: 2;
-	color: #000000;
-	background: #aeb826cc;
-	border: 1px solid #4674D9;
-	text-align: left;
+    /**/
+    grid-column: 1 / 3;
+    grid-row: 2;
+    color: #000000;
+    background: #aeb826cc;
+    border: 1px solid #4674D9;
+    text-align: left;
 }
 
 .three {
-	grid-column: 1;
-	grid-row: 3 / 5;
-	color: #000000;
-	background: rgba(255, 89, 90, 0.8);
-	border: 1px solid #4674D9;
-	text-align: center;
+    grid-column: 1;
+    grid-row: 3 / 5;
+    color: #000000;
+    background: rgba(255, 89, 90, 0.8);
+    border: 1px solid #4674D9;
+    text-align: center;
 }
 
 .four {
-	grid-column: 2;
-	grid-row: 3;
-	color: #000000;
-	background: #b32727cc;
-	border: 1px solid #4674D9;
-	text-align: center;
+    grid-column: 2;
+    grid-row: 3;
+    color: #000000;
+    background: #b32727cc;
+    border: 1px solid #4674D9;
+    text-align: center;
 }
 
 .five {
-	grid-column: 2 / 3;
-	grid-row: 4;
-	color: #000000;
-	background: #6e6e59cc;
-	border: 1px solid #4674D9;
-	text-align: left;
+    grid-column: 2 / 3;
+    grid-row: 4;
+    color: #000000;
+    background: #6e6e59cc;
+    border: 1px solid #4674D9;
+    text-align: left;
 }
 
 .styled {
-	border: 0;
-	line-height: 2.5;
-	padding: 0 20px;
-	font-size: 2rem;
-	text-align: center;
-	color: #fff;
-	text-shadow: 1px 1px 1px #000;
-	border-radius: 10px;
-	background-color: rgba(220, 0, 0, 1);
-	background-image: linear-gradient(to top left, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 30%, rgba(0, 0, 0, 0));
-	box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6);
+    border: 0;
+    line-height: 2.5;
+    padding: 0 20px;
+    font-size: 2rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 10px;
+    background-color: rgba(220, 0, 0, 1);
+    background-image: linear-gradient(to top left, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2) 30%, rgba(0, 0, 0, 0));
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6), inset -2px -2px 3px rgba(0, 0, 0, .6);
+}
+.centered {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+span.description {
+    pointer-events: none;
 }
 
 .styled:hover {
-	background-color: rgba(255, 0, 0, 1);
+    background-color: rgba(255, 0, 0, 1);
 }
 
 .styled:active {
-	box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6), inset 2px 2px 3px rgba(0, 0, 0, .6);
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6), inset 2px 2px 3px rgba(0, 0, 0, .6);
 }
 
 .input-file-button {
-	padding: 6px 25px;
-	background-color: #FF6600;
-	border-radius: 4px;
-	color: white;
-	cursor: pointer;
-	font-size: 2rem;
+    padding: 6px 25px;
+    background-color: #FF6600;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 2rem;
 }
-
 
 .dtbl {
-	overflow: auto;
-	width: 90vw;
-	height: 100vh;
-	border: 1px solid #4674D9;
-	position: relative;
-	left: 1px;
+    overflow: auto;
+    scroll-behavior: smooth;
+    width: 90vw;
+    height: 100vh;
+    border: 1px solid #4674D9;
+    position: relative;
+    left: 1px;
 }
 table {
-	table-layout: fixed;
-	width: 90vw;
-	border: 2px solid #30302b;
-	border-collapse: collapse;
-	font-size: 3rem;
+    table-layout: fixed;
+    width: 90vw;
+    border: 2px solid #30302b;
+    border-collapse: collapse;
+    font-size: 3rem;
 }
 
 tr:nth-child(even) {
-	background-color: #cfc3c3cc;
-	border: 1px solid #020202;
-	font-size: 4rem;
+    background-color: #cfc3c3cc;
+    border: 1px solid #020202;
+    font-size: 4rem;
 }
 
 tr:nth-child(odd) {
-	background-color: #f5b5b5cc;
-	border: 1px solid #020202;
-	font-size: 4rem;
+    background-color: #f5b5b5cc;
+    border: 1px solid #020202;
+    font-size: 4rem;
 }
 
 th {
-	background-color: rgb(43, 106, 179);
-	border: 1px solid #020202;
-	border-collapse: collapse;
-	position: sticky;
-	top: 0;
-	font-size: 3rem;
+    background-color: rgb(43, 106, 179);
+    border: 1px solid #020202;
+    border-collapse: collapse;
+    position: sticky;
+    top: 0;
+    font-size: 3rem;
 }
