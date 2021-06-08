@@ -9,6 +9,7 @@ let onRemMarker = function(marker) {}
 let mouseOverMarker = function (marker) { };
 let mouseOutMarker = function (marker) { };
 let clickMarker = function (marker) { };
+let posClickMarker = function (marker) { };
 let rightClickMarker = function (marker) { };
 
 const markerStateEnum = {
@@ -56,6 +57,8 @@ imgs.get = function (marker) {
         sel.push(new kakao.maps.MarkerImage(`res_marker_select_${is}.png`, sizeN));
         sov.push(new kakao.maps.MarkerImage(`res_marker_selectover_${is}.png`, sizeO));
     }
+
+    //console.log(nrm);
 }
 
 const clusterer = new kakao.maps.MarkerClusterer({
@@ -107,6 +110,7 @@ const _handlerMouseClick = function (marker) {
 
     clickMarker(marker);
     _updateMarker(marker);
+    posClickMarker(marker);
 }
 const _handlerMouseRightClick = function (marker) {
     rightClickMarker(marker);

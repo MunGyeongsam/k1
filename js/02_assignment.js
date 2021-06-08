@@ -174,8 +174,74 @@ mouseOverMarker = function (marker) {
     resultDiv = document.getElementById('clickAddress');
     resultDiv.innerHTML = marker.getTitle();
 }
+
+let test = 1;
+
+let imgi = 1;
+
 mouseOutMarker = function (marker) { }
+
+//마커위 문자 출력
+//https://devtalk.kakao.com/t/topic/65719
+//https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+//
+//posClickMarker = function (marker) {
+//    var c = document.getElementById("kc");
+//    var context = c.getContext("2d");
+//    var img = new Image();
+//    img.addEventListener('load', function(){
+//        const offset = 40;
+//        const sizeN = new kakao.maps.Size(60+offset, 60+offset);
+//
+//        context.drawImage(img, 0, 0);
+//        context.font = "12px serif";
+//        context.fillText("kday" + test.toString(), 10, 30);
+//        test = test + 1;
+//        
+//        var mi = new kakao.maps.MarkerImage(c.toDataURL("image/png"), sizeN);
+//        console.log("mi :", mi);
+//        marker.setImage(mi);
+//    });
+//    img.src = "res_marker_normal_0" + imgi.toString() + ".png";
+//    imgi = imgi + 1;
+//    if (imgi > 9)
+//        imgi = 1;
+//}
+
 clickMarker = function (marker) {
+    console.log("before :", marker);
+    console.log("before :", marker.getImage());
+
+    let inner = marker.a.innerHTML;
+    let outer = marker.a.outterHTML;
+
+    console.log("inner1 :", inner);
+    console.log("inner2 :", marker.a.innerHTML);
+
+
+
+
+
+    //marker.a.innerHTML = inner;
+    //marker.a.outterHTML = outer;
+    //marker.setMap(null);
+
+    
+	//let a = marker.a.innerHTML;
+	//marker.a.innerHTML = a;
+	//marker.setMap(null);
+	//marker.setMap(map);
+
+    //let a = marker.a.innerHTML;
+    //marker.a.innerHTML = a;
+    //
+    //marker.mouseOver = function (event) { _handlerMouseOver(marker); };
+    //marker.mouseOut = function (event) { _handlerMouseOut(marker); };
+    //marker.click = function (event) { _handlerMouseClick(marker); };
+    //marker.rightClick = function (event) { _handlerMouseRightClick(marker); };
+    //
+    //console.log("after :", marker);
+
     panTo(marker.getPosition());
 }
 
