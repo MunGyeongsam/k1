@@ -33,6 +33,8 @@ function navi() {
 function loadExcel(event) {
 	let input = event.target;
 	let fname = event.target.files[0];
+
+	onAddedAllMarkers = addRow;
 	excelExport(fname, addMarkers);
 }
 
@@ -111,7 +113,7 @@ clickMarker = function (marker) {
 //*
 let id = 1;
 onAddMarker = function (marker) {
-	addRow(marker);
+	//addRow(marker);
 }
 onRemMarker = function (marker) {
 	removeRow(marker);

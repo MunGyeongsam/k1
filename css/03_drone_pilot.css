@@ -109,13 +109,13 @@ table {
 }
 
 tr:nth-child(even) {
-    background-color: #cfc3c3cc;
+    background-color: #ffffff;
     border: 1px solid #020202;
     font-size: 4rem;
 }
 
 tr:nth-child(odd) {
-    background-color: #f5b5b5cc;
+    background-color: #d4d4d4;
     border: 1px solid #020202;
     font-size: 4rem;
 }

@@ -3,6 +3,14 @@
 //=============================================================================
 const markers = new Map();
 
+//=============================================================================
+// private variables
+//=============================================================================
+const _lands = [];
+const _landToAddr = new Map();
+let _LENGTH_OF_LANDS = 0;
+
+
 // custumize in each html
 let onAddMarker = function(marker) {}
 let onRemMarker = function(marker) {}
@@ -11,6 +19,8 @@ let mouseOutMarker = function (marker) { };
 let clickMarker = function (marker) { };
 let posClickMarker = function (marker) { };
 let rightClickMarker = function (marker) { };
+
+let onAddedAllMarkers = null;
 
 const markerStateEnum = {
     NOT_ASSIGNED: 0,
@@ -147,9 +157,62 @@ function _findBestResult(result, addr0)
     return ret;
 }
 
+function makeClouser(i, addr, addr0, land)
+{
+    return function (result, status) {
+
+        let ti = i;
+        let taddr = addr;
+
+        if (status === kakao.maps.services.Status.OK) {
+
+            var ret = _findBestResult(result, addr0);
+            addMarker(ret.address_name, new kakao.maps.LatLng(ret.y, ret.x), {addr:addr, land:land});
+            if (i==0){
+                panTo(new kakao.maps.LatLng(ret.y, ret.x));
+            }
+
+            //console.warn('['+ti.toString()+'] : @@@>>> ok :' + taddr);
+        } else {
+            console.warn('['+ti.toString()+'] : ===>>> not fund :' + taddr);
+            console.log(status);
+            console.log(result);
+        }
+
+        console.assert(_LENGTH_OF_LANDS > 0, "Logic errror");
+        --_LENGTH_OF_LANDS;
+        if (0 == _LENGTH_OF_LANDS)
+        {
+            forAllLands();
+        }
+    };
+}
+
+function forAllLands()
+{
+    if(!onAddedAllMarkers)
+        return;
+    
+    let LEN = _lands.length;
+    let mkr, addr, addr1;
+    for(let i=0; i<LEN; ++i)
+    {
+        addr = _lands[i];
+        mkr = _landToAddr.get(addr);
+        if (mkr)
+        {
+            onAddedAllMarkers(mkr);
+        }
+    }
+}
+
 function addMarkers(lands) {
     let LEN = lands.length;
     let addr0, addr1, addr;
+
+    _lands.length = 0;
+    _landToAddr.clear();
+    _LENGTH_OF_LANDS = LEN;
 
     for(let i=0; i<LEN; ++i)
     {
@@ -159,21 +222,11 @@ function addMarkers(lands) {
 
         addr = addr0 + ' ' + addr1;
 
-        addressSearch(addr, function (result, status) {
+        _lands.push(addr);
 
-            if (status === kakao.maps.services.Status.OK) {
+        //console.log('['+i.toString()+'] :' + addr, addr1);
 
-                var ret = _findBestResult(result, addr0);
-                addMarker(ret.address_name, new kakao.maps.LatLng(ret.y, ret.x), {land:land});
-                if (i==0){
-                    panTo(new kakao.maps.LatLng(ret.y, ret.x));
-                }
-
-            } else {
-                console.warn('===>>> not fund :' + addr);
-                console.log(status);
-            }
-        });
+        addressSearch(addr, makeClouser(i, addr, addr0, land));
     }
 }
 
@@ -201,6 +254,7 @@ function addMarker(address, coord, additional = {}) {
         //});
         clusterer.addMarker(marker);
         markers.set(address, marker);
+        _landToAddr.set(additional.addr, marker);
 
         marker.additional = additional;
         marker.kkk = {
