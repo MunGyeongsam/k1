@@ -54,11 +54,11 @@ function chageStateSelect() {
 	if (selectedMarker) {
 		selectedMarker.kkk.state = state;
 		_updateMarker(selectedMarker);
+		updateTable(selectedMarker);
 	}
 }
 
-function updateSelectIndex(marker)
-{
+function updateSelectIndex(marker) {
 	var combo = document.getElementById("id-state");
 	var state = marker.kkk.state;
 
@@ -75,8 +75,7 @@ function updateSelectIndex(marker)
 	}
 }
 
-clickMarker = function (marker) {
-
+function setSelectMarker(marker) {
 	if (selectedMarker && marker !== selectedMarker) {
 		selectMarker(selectedMarker, false);
 	} else {
@@ -98,11 +97,18 @@ clickMarker = function (marker) {
 
 	resultDiv = document.getElementById('marker_addr');
 	resultDiv.innerHTML = selectedAddr;
-
-	//console.log(marker.getPosition());
 }
 
-/*
+clickMarker = function (marker) {
+	//토글 방지
+	marker.kkk.selected = true;
+
+	setSelectMarker(marker);
+	selectRow(marker.row);
+	updateScroll(marker.row);
+}
+
+//*
 let id = 1;
 onAddMarker = function (marker) {
 	addRow(marker);
@@ -116,13 +122,54 @@ function removeRow(marker) {
 	var row = table.deleteRow(marker.row.rowIndex);
 }
 
+function updateTable(marker) {
+	let state = marker.kkk.state;
+	let value = "...";
+	if (state == markerStateEnum.NOT_ASSIGNED) {
+		value = "미할당";
+	} else if (state == markerStateEnum.ASSIGNED) {
+		value = "할당";
+	} else if (state == markerStateEnum.IN_WORKING) {
+		value = "작업시작";
+	} else if (state == markerStateEnum.DONE) {
+		value = "완료";
+	} else if (state == markerStateEnum.IMPOSSIBLE) {
+		value = "작업불가";
+	}
+
+	marker.row.cells[2].innerHTML = value;
+}
+
+function updateScroll(row) {
+	var dtbl = document.getElementById("dtbl");
+	dtbl.scrollTop = row.offsetTop;
+}
+
+let selectedRow;
+function selectRow(row) {
+	if (selectedRow) {
+		selectedRow.style.backgroundColor = selectedRow.orgColor;
+	}
+	selectedRow = row;
+
+	row.orgColor = row.style.backgroundColor;
+	row.style.backgroundColor = '#BCD4EC';
+}
+
 function addRow(marker) {
 	var table = document.getElementById("list");
 	var row = table.insertRow(table.rows.length);
 	let cell0 = row.insertCell(0);
 	let cell1 = row.insertCell(1);
 	let cell2 = row.insertCell(2);
-	let cell3 = row.insertCell(3);
+
+	//let a = marker.a.innerHTML;
+	//marker.a.innerHTML = a + "<span class='centered' onclick='return false;'>kday</span>";
+
+	//let a = marker.a.innerHTML;
+	//marker.a.innerHTML = a;
+	//marker.setMap(null);
+
 
 	let addr = marker.getTitle();
 	let words = addr.split(' ');
@@ -140,18 +187,20 @@ function addRow(marker) {
 
 	cell0.innerHTML = (id++).toString();
 	cell1.innerHTML = addr;
-	cell2.innerHTML = ".";
-	cell3.innerHTML = "미할당";
+	cell2.innerHTML = "미할당";
 
 	marker.row = row;
 
 	row.onclick = function () {
-		console.log("marker", marker);
-		console.log(marker.innerHTML);
-		marker.kkk.selected = !marker.kkk.selected;
+		//console.log("marker", marker);
+		//console.log(row.innerHTML);
+		if (marker.kkk.selected)
+			return;
+
+		marker.kkk.selected = true;
 		_updateMarker(marker);
-		clickMarker(marker);
-		row.toggleClass("clicked");
+		setSelectMarker(marker);
+		selectRow(this);
 	}
 }
 //*/

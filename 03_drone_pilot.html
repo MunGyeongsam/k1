@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Drone Pilot</title>
+	<title>Drone Pilot2</title>
 	<script>
 		const SW = window.innerWidth;
 		const SH = window.innerHeight;
@@ -11,6 +11,7 @@
             // https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Grid_Layout
 	</script>
 	<link REL="stylesheet" href="./css/03_drone_pilot.css">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 </head>
 
 <body>
@@ -22,6 +23,10 @@
 		</div>
 		<div class="two">
 			<input class="styled" type="button" value="Tell" onclick="tell()">
+			&nbsp;
+			<input class="styled" type="button" value="지형" onclick="toggleOverlayMapTypeId('terrain')">
+			&nbsp;
+			<input class="styled" type="button" value="지적" onclick="toggleOverlayMapTypeId('use_district')">
 			&nbsp;
 			<input class="styled" type="button" value="Path" onclick="navi()">
 			&nbsp;
@@ -56,7 +61,7 @@
 			<h1>Four</h1>
 		</div>
 		<div class="five">
-			<div class="dtbl">
+			<div class="dtbl" id="dtbl">
 				<table id="list">
 					<thead>
 						<tr>
@@ -66,21 +71,6 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>aaaaaa</td>
-							<td>bbb</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>aaaaaa</td>
-							<td>bbb</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>aaaaaa</td>
-							<td>bbb</td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
