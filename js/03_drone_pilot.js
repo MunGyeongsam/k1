@@ -144,7 +144,7 @@ function updateTable(marker) {
 
 function updateScroll(row) {
 	var dtbl = document.getElementById("dtbl");
-	dtbl.scrollTop = row.offsetTop;
+	dtbl.scrollTop = row.offsetTop - row.clientHeight;
 }
 
 let selectedRow;
