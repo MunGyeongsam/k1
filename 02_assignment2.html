@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <title>Admin2</title>
         <meta charset="utf-8">
         <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <script>
-            const SW = window.innerWidth;
-            const SH = window.innerHeight;
-            const HW = SW / 3;
-            //grid-auto-rows: minmax(200px, auto);
-        </script>
 
-        <link rel="stylesheet" href="./css/02_assignment2.css">
+		<link rel="stylesheet" href="./css/02_assignment2.css">
     </head>
 
     <body>
-        <canvas id="kc" width="72" height="72"></canvas>
         <div class="wrapper">
+			<canvas id="kc" width="72" height="72"></canvas>
             <div class="one">
                 <h1>
                     <a title="Home" href="index.html">Home</a>
                 </h1>
             </div>
             <div class="two-1">
+				<h1>two-1</h1>
+            </div>
+            <div class="two-2">
                 <p>
                     <label>Zoom
                         <label><input onclick="setZoomable(true)" type="radio" name="zoom" value="on">
@@ -48,7 +44,7 @@
                     <button
                         style='width:80px; height:50px'
                         onclick="toggleOverlayMapTypeId('use_district')">지적편집</button>
-                    1&nbsp;2&nbsp;3&nbsp;4&nbsp;&nbsp;
+						
                     <button style='width:80px; height:50px' onclick="buttonClick('RECTANGLE')">사각형</button>
                     &nbsp;
                     <button style='width:80px; height:50px' onclick="buttonClick('POLYGON')">다각형</button>
@@ -66,12 +62,17 @@
                         <option value="audi">Audi</option>
                     </select>
                 </p>
-            </div>
-            <div class="two-2">aaa</div>
+			</div>
             <div class="three">
                 <h1>Three</h1>
                 <div class="dtbl">
                     <table id="list">
+						<colgroup>
+							<col style="width:40px">
+							<col style="width:auto">
+							<col style="width:80px">
+							<col style="width:80px">
+						</colgroup>
                         <thead>
                             <tr>
                                 <th>id</th>
@@ -90,10 +91,6 @@
             <div class="five">
                 <input type="text" onkeyup="keyupFunction(event)"/>
                 <input type="file" id="excelFile" onchange="loadExcel(event)"/>
-
-                <p>
-                    <em>지도를 클릭해주세요!</em>
-                </p>
                 <div id="clickLatlng"></div>
                 <div id="clickAddress"></div>
             </div>
@@ -119,6 +116,10 @@
             let lat = 36.30498817138545;
             let lng = 127.87096679485826;
 
+			lng = 127.020248408766;
+			lat = 37.2683946593475;
+
+
             initOption.container = document.getElementById('map');
             initOption.mapOption.center = new kakao
                 .maps
@@ -127,12 +128,13 @@
         </script>
         <script type="text/javascript" src="./js/js02.js"></script>
         <script type="text/javascript" src="./js/js03.js"></script>
-        <script type="text/javascript" src="./js/js04.js"></script>
+        <script type="text/javascript" src="./js/js04_admin.js"></script>
         <script type="text/javascript" src="./js/js05.js"></script>
 
-        <script type="text/javascript" src="./js/02_assignment.js"></script>
+        <script type="text/javascript" src="./js/02_assignment2.js"></script>
 
         <script>
+			//https://map.naver.com/v5/api/wfs/stargate?version=1.0&output=geojson&sourcecrs=epsg:4326&targetcrs=epsg:4326&codetype=naver&level=19&order=jibun&request=pointToFeatures&coords=${lng},${lat}
             map.setLevel(1);
             toggleOverlayMapTypeId('use_district');
             kakao
@@ -145,6 +147,31 @@
                 .addListener(map, 'rightclick', function ($) {
                     clearMarkers();
                 });
+
+				
+				
+				lat = 36.30498817138545;
+				lng = 127.87096679485826;
+
+			//var wtmX = 160082.538257218, wtmY = -4680.975749087054;
+			//wtmX = lng;
+			//wtmY = lat;
+			//
+			//var callback = function(result, status) {
+			//	if (status === kakao.maps.services.Status.OK) {
+			//		console.log("---x :", result[0].x); // 126.570667
+			//		console.log("---y :", result[0].y); // 33.45070100000001
+			//	}
+			//};
+			//
+			//// WTM 좌표를 WGS84 좌표계의 좌표로 변환한다
+			//geocoder.transCoord(wtmX, wtmY, callback, {
+			//	input_coord: kakao.maps.services.Coords.WGS84,
+			//	output_coord: kakao.maps.services.Coords.TM
+			//});
+			//
+			////WGS84_TO_WTM(pt)
+			////addressSearch("수원시팔달구 인계동 562-70", callback);
         </script>
     </body>
 

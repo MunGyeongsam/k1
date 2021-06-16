@@ -91,12 +91,17 @@ function buttonClick(type) {
             .addListener(map, 'click', mapClick);
 }
 
+let pilotIdx = 0;
 function keyupFunction(e) {
     let state = markerStateEnum.NOT_ASSIGNED;
     if (e.key == '1') {
         state = markerStateEnum.NOT_ASSIGNED;
     } else if (e.key == '2') {
         state = markerStateEnum.ASSIGNED;
+        ++pilotIdx;
+        if (pilotIdx >= _pilots.length)
+            pilotIdx = 0;
+        
     } else if (e.key == '3') {
         state = markerStateEnum.IN_WORKING;
     } else if (e.key == '4') {
@@ -120,6 +125,7 @@ function keyupFunction(e) {
         if (value.kkk.selected) {
             value.kkk.state = state;
             value.kkk.selected = false;
+            value.kkk.pilot = _pilots[pilotIdx];
             _updateMarker(value);
         }
     });
@@ -209,39 +215,6 @@ mouseOutMarker = function (marker) { }
 //}
 
 clickMarker = function (marker) {
-    console.log("before :", marker);
-    console.log("before :", marker.getImage());
-
-    let inner = marker.a.innerHTML;
-    let outer = marker.a.outterHTML;
-
-    console.log("inner1 :", inner);
-    console.log("inner2 :", marker.a.innerHTML);
-
-
-
-
-
-    //marker.a.innerHTML = inner;
-    //marker.a.outterHTML = outer;
-    //marker.setMap(null);
-
-    
-	//let a = marker.a.innerHTML;
-	//marker.a.innerHTML = a;
-	//marker.setMap(null);
-	//marker.setMap(map);
-
-    //let a = marker.a.innerHTML;
-    //marker.a.innerHTML = a;
-    //
-    //marker.mouseOver = function (event) { _handlerMouseOver(marker); };
-    //marker.mouseOut = function (event) { _handlerMouseOut(marker); };
-    //marker.click = function (event) { _handlerMouseClick(marker); };
-    //marker.rightClick = function (event) { _handlerMouseRightClick(marker); };
-    //
-    //console.log("after :", marker);
-
     panTo(marker.getPosition());
 }
 
